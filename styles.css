@@ -2540,3 +2540,286 @@ body:not(.playing) .app-header {
     animation: none;
   }
 }
+
+/* v0.3.2 — Chapter Map commercial UI polish */
+.chapter-stage {
+  --map-panel-border: rgba(255,235,191,.3);
+  --map-panel-bg: rgba(8,20,39,.84);
+  --map-panel-shadow: inset 0 1px rgba(255,255,255,.09),0 7px 18px rgba(0,0,0,.3);
+  --map-small-radius: 12px;
+  --map-large-radius: 16px;
+}
+
+/* Stage content inherited absolute coordinates from the old dashboard cards.
+   Re-center the existing inner frame without changing the stage artwork or size. */
+.chapter-node {
+  line-height: 1;
+}
+.chapter-node .level-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  padding: 0;
+  place-items: center;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+  border-radius: 11px;
+  transform: translate(-50%,-52%);
+}
+.chapter-node .level-stars {
+  position: absolute;
+  top: calc(100% + 5px);
+  bottom: auto;
+  left: 50%;
+  display: block;
+  margin: 0;
+  line-height: 1;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.chapter-node:not(.cleared) .level-stars,
+.chapter-node.locked .level-stars {
+  display: none;
+}
+.chapter-node.locked .level-number {
+  padding-top: 1px;
+  background: linear-gradient(145deg,#343c50,#1d2433);
+  box-shadow: inset 0 1px rgba(255,255,255,.1),inset 0 -4px rgba(0,0,0,.18);
+}
+.chapter-node.locked::after {
+  color: #cbd5e3;
+  border-color: rgba(190,203,222,.34);
+  background: rgba(7,16,32,.84);
+  box-shadow: 0 3px 7px rgba(0,0,0,.26);
+}
+
+/* Consistent typography rhythm. */
+body:not(.playing) .brand-button strong {
+  line-height: 1.25;
+}
+body:not(.playing) .resource {
+  gap: clamp(5px,.55vw,8px);
+}
+body:not(.playing) .resource i {
+  display: grid;
+  width: 1.1em;
+  height: 1.1em;
+  place-items: center;
+  line-height: 1;
+}
+body:not(.playing) .resource b {
+  line-height: 1;
+}
+body:not(.playing) .round-button {
+  display: grid;
+  padding: 0;
+  place-items: center;
+  line-height: 1;
+}
+.chapter-title small {
+  line-height: 1.2;
+}
+.chapter-title h1 {
+  font-weight: 900;
+  line-height: 1.08;
+}
+.chapter-title p {
+  letter-spacing: .01em;
+}
+.chapter-theme-tab .restaurant-tab {
+  align-items: center;
+}
+.chapter-theme-tab .restaurant-tab > div {
+  display: grid;
+  gap: 2px;
+}
+.chapter-theme-tab .restaurant-tab small,
+.chapter-theme-tab .restaurant-tab strong {
+  margin: 0;
+  line-height: 1.2;
+}
+.chapter-progress span,
+.chapter-progress strong,
+.chapter-progress small,
+.chapter-daily small,
+.chapter-daily strong,
+.chapter-daily .daily-progress b {
+  line-height: 1.25;
+}
+.chapter-progress strong {
+  align-self: center;
+}
+.level-tooltip small {
+  line-height: 1.25;
+}
+.level-tooltip strong {
+  line-height: 1.3;
+  letter-spacing: .01em;
+}
+.level-tooltip i {
+  line-height: 1.35;
+}
+
+/* Shared panel geometry, light direction, and material language. */
+body:not(.playing) .app-header {
+  box-shadow: inset 0 1px rgba(255,255,255,.11),0 8px 22px rgba(1,7,23,.3);
+}
+.chapter-story-card,
+.chapter-daily {
+  border: 1px solid var(--map-panel-border);
+  border-radius: var(--map-large-radius);
+  background-color: var(--map-panel-bg);
+  box-shadow: var(--map-panel-shadow);
+}
+.chapter-daily {
+  margin: 0;
+}
+.chapter-progress,
+.chapter-actions .soft-button,
+.level-tooltip {
+  border: 1px solid var(--map-panel-border);
+  border-radius: var(--map-small-radius);
+  box-shadow: var(--map-panel-shadow);
+}
+.chapter-progress,
+.chapter-daily {
+  align-items: center;
+}
+.chapter-actions .soft-button {
+  align-items: center;
+  justify-content: center;
+}
+.chapter-actions .soft-button span {
+  display: grid;
+  width: 1.35em;
+  height: 1.35em;
+  flex: 0 0 auto;
+  place-items: center;
+  line-height: 1;
+}
+.chapter-actions .soft-button b {
+  line-height: 1.25;
+}
+.chapter-daily .daily-icon {
+  line-height: 1;
+}
+.chapter-daily .daily-progress b {
+  margin-bottom: 4px;
+}
+.chapter-daily .daily-progress i {
+  height: 6px;
+}
+.chapter-theme-tab .restaurant-tab {
+  box-shadow: inset 0 1px rgba(255,255,255,.08),0 7px 18px rgba(0,0,0,.28);
+}
+
+/* Preserve the current-stage focus while keeping highlights controlled. */
+.chapter-node.current {
+  box-shadow:
+    inset 0 -7px rgba(151,66,26,.13),
+    0 7px 0 #9b5530,
+    0 0 0 4px rgba(255,225,117,.2),
+    0 0 20px 6px rgba(255,195,76,.38);
+}
+.chapter-node.current .node-glow {
+  border-color: rgba(255,225,114,.66);
+  box-shadow: 0 0 19px rgba(255,191,74,.44);
+}
+.chapter-node.locked {
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.08),
+    inset 0 -7px rgba(0,0,0,.19),
+    0 6px 0 #151b29,
+    0 8px 17px rgba(0,0,0,.38);
+}
+.chapter-node.cleared {
+  box-shadow:
+    inset 0 1px rgba(255,255,255,.15),
+    inset 0 -7px rgba(29,113,94,.15),
+    0 7px 0 #2c8c7a,
+    0 9px 18px rgba(0,0,0,.34);
+}
+.chapter-progress,
+.chapter-daily {
+  animation-duration: 5.4s;
+}
+
+@keyframes currentNodeFloat {
+  0%,100% { transform: translate(-50%,-50%) translateY(0) scale(1); }
+  50% { transform: translate(-50%,-50%) translateY(-2px) scale(1.02); }
+}
+@keyframes currentNodePulse {
+  0% { opacity: .76; transform: scale(.78); }
+  78%,100% { opacity: 0; transform: scale(1.26); }
+}
+@keyframes panelBreathe {
+  0%,100% { box-shadow: var(--map-panel-shadow); }
+  50% { box-shadow: inset 0 1px rgba(255,255,255,.09),0 8px 19px rgba(0,0,0,.32),0 0 10px rgba(255,214,108,.05); }
+}
+
+@media (max-width: 900px) {
+  body:not(.playing) .brand-button > span:last-child {
+    transform: translateY(-1px);
+  }
+  body:not(.playing) .resource {
+    border-radius: 10px;
+  }
+  .chapter-title h1 {
+    margin: 4px 0 0;
+    letter-spacing: .035em;
+  }
+  .chapter-theme-tab .restaurant-tab {
+    min-height: 45px;
+    border-radius: 12px;
+  }
+  .chapter-theme-tab .restaurant-tab > span {
+    border-radius: 10px;
+  }
+  .chapter-progress {
+    min-height: 45px;
+    padding: 5px 10px;
+    border-radius: 12px;
+  }
+  .chapter-daily {
+    right: 14px;
+    min-height: 45px;
+    border-radius: 12px;
+  }
+  .chapter-actions {
+    left: 14px;
+  }
+  .chapter-actions .soft-button {
+    border-radius: 12px;
+  }
+  .chapter-node .level-number {
+    width: 36px;
+    height: 36px;
+    transform: translate(-50%,-52%);
+  }
+  .chapter-node.locked .level-number {
+    width: 34px;
+    height: 34px;
+  }
+  .chapter-node.locked::after {
+    padding: 3px 7px;
+    line-height: 1;
+  }
+  .level-tooltip {
+    border-radius: 10px;
+  }
+  .level-tooltip small {
+    letter-spacing: .06em;
+  }
+  .chapter-daily > div:first-of-type {
+    display: grid;
+    gap: 2px;
+  }
+  .chapter-daily .daily-progress b {
+    margin-bottom: 4px;
+  }
+}
