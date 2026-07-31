@@ -72,7 +72,7 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const els = {
-    loading: $("#loadingView"), loadingBar: $("#loadingBar"), loadingText: $("#loadingText"),
+    loading: $("#loadingView"), loadingBar: $("#loadingBar"), loadingText: $("#loadingText"), loadingPercent: $("#loadingPercent"),
     lobby: $("#lobbyView"), game: $("#gameView"), profileCoins: $("#profileCoins"), profileGems: $("#profileGems"),
     restaurantTabs: $("#restaurantTabs"), preview: $("#restaurantPreview"), levelGrid: $("#levelGrid"),
     restaurantChapter: $("#restaurantChapter"), restaurantName: $("#restaurantName"), restaurantCompletion: $("#restaurantCompletion"),
@@ -102,6 +102,9 @@
   let frameHandle = null;
   let toastHandle = null;
   let audioContext = null;
+  let musicTimer = null;
+  let musicMode = "lobby";
+  let musicStep = 0;
 
   function defaultProfile() {
     return {
@@ -183,9 +186,12 @@
     els.profileCoins.textContent = profile.coins;
     els.profileGems.textContent = profile.gems;
     els.soundButton.classList.toggle("muted", !profile.sound);
+    els.soundButton.textContent = profile.sound ? "♫" : "×";
+    els.soundButton.setAttribute("aria-label", profile.sound ? "關閉音樂與音效" : "開啟音樂與音效");
   }
 
   function renderLobby() {
+    fitLobbyCanvas();
     ensureDaily();
     renderResources();
     const restaurant = RESTAURANTS[selectedRestaurant];
@@ -369,6 +375,7 @@
     els.game.classList.remove("hidden");
     els.game.dataset.stage = level.atmosphere;
     document.body.classList.add("playing");
+    setMusicMode("game");
     fitGameCanvas();
     renderGameStatic();
     updateAllGameUI();
@@ -808,6 +815,7 @@
     els.lobby.classList.remove("hidden");
     delete els.game.dataset.stage;
     document.body.classList.remove("playing");
+    setMusicMode("lobby");
     els.game.style.removeProperty("height");
     renderLobby();
   }
@@ -824,6 +832,14 @@
     canvas.style.setProperty("--game-scale", String(scale));
     view.style.height = `${GAME_HEIGHT * scale + (showRotateHint ? 44 : 0)}px`;
     $("#rotateHint").classList.toggle("show", showRotateHint);
+  }
+
+  function fitLobbyCanvas() {
+    const viewport = window.visualViewport;
+    const availableWidth = viewport?.width || window.innerWidth;
+    const availableHeight = viewport?.height || window.innerHeight;
+    const scale = Math.min(1, availableWidth / GAME_WIDTH, availableHeight / GAME_HEIGHT);
+    document.documentElement.style.setProperty("--canvas-scale", String(scale));
   }
 
   async function toggleFullscreen() {
@@ -864,10 +880,16 @@
     toastHandle = setTimeout(() => els.toast.classList.remove("show"), 1800);
   }
 
+  function ensureAudio() {
+    audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+    if (audioContext.state === "suspended") audioContext.resume();
+    return audioContext;
+  }
+
   function playTone(frequency, duration, type = "sine", volume = .04) {
     if (!profile.sound) return;
     try {
-      audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+      ensureAudio();
       const oscillator = audioContext.createOscillator(), gain = audioContext.createGain();
       oscillator.type = type; oscillator.frequency.value = frequency;
       gain.gain.setValueAtTime(volume, audioContext.currentTime);
@@ -875,6 +897,39 @@
       oscillator.connect(gain); gain.connect(audioContext.destination);
       oscillator.start(); oscillator.stop(audioContext.currentTime + duration);
     } catch { /* Audio is optional. */ }
+  }
+
+  function musicTick() {
+    if (!profile.sound) return;
+    const notes = musicMode === "game"
+      ? [293.66,392,440,392,329.63,440,493.88,440]
+      : [261.63,329.63,392,329.63,246.94,329.63,392,493.88];
+    const note = notes[musicStep % notes.length];
+    playTone(note, musicMode === "game" ? .24 : .42, "triangle", .012);
+    if (musicStep % 4 === 0) playTone(note / 2, .65, "sine", .009);
+    musicStep += 1;
+  }
+
+  function startMusic() {
+    if (!profile.sound || musicTimer) return;
+    try { ensureAudio(); } catch { return; }
+    musicTick();
+    musicTimer = setInterval(musicTick, musicMode === "game" ? 360 : 620);
+  }
+
+  function stopMusic() {
+    clearInterval(musicTimer);
+    musicTimer = null;
+  }
+
+  function setMusicMode(mode) {
+    if (musicMode === mode && musicTimer) return;
+    musicMode = mode;
+    musicStep = 0;
+    if (musicTimer) {
+      stopMusic();
+      startMusic();
+    }
   }
 
   function playSuccess() {
@@ -902,9 +957,10 @@
       const step = assetsReady ? 13 : Math.max(1, Math.round((92 - progress) * .12));
       progress = Math.min(assetsReady ? 100 : 92, progress + step);
       els.loadingBar.style.width = `${progress}%`;
-      els.loadingText.textContent = progress < 35 ? `點亮餐車中… ${progress}%`
-        : progress < 75 ? `熬煮今晚的湯頭… ${progress}%`
-          : progress < 100 ? `等待晚歸的客人… ${progress}%` : "準備完成";
+      els.loadingPercent.textContent = `${progress}%`;
+      els.loadingText.textContent = progress < 35 ? "點亮餐車中…"
+        : progress < 75 ? "熬煮今晚的湯頭…"
+          : progress < 100 ? "等待晚歸的客人…" : "準備完成";
       if (progress < 100) return setTimeout(tick, 48);
       setTimeout(() => {
         els.loading.classList.add("leaving");
@@ -932,15 +988,22 @@
   });
   els.soundButton.addEventListener("click", () => {
     profile.sound = !profile.sound; saveProfile();
-    if (profile.sound) playTone(540, .08);
+    renderResources();
+    if (profile.sound) { playTone(540, .08); startMusic(); }
+    else stopMusic();
   });
   $$("[data-close]").forEach((button) => button.addEventListener("click", () => closeModal($(`#${button.dataset.close}`))));
   $$(".modal").forEach((modal) => modal.addEventListener("click", (event) => {
     if (event.target === modal && modal !== els.resultModal) closeModal(modal);
   }));
-  window.addEventListener("resize", fitGameCanvas);
-  window.visualViewport?.addEventListener("resize", fitGameCanvas);
+  window.addEventListener("resize", () => { fitLobbyCanvas(); fitGameCanvas(); });
+  window.visualViewport?.addEventListener("resize", () => { fitLobbyCanvas(); fitGameCanvas(); });
   document.addEventListener("fullscreenchange", fitGameCanvas);
+  document.addEventListener("pointerdown", (event) => {
+    if (!event.target.closest("button")) return;
+    startMusic();
+    if (event.target !== els.soundButton) playTone(420, .035, "triangle", .018);
+  }, { passive: true });
 
   renderLobby();
   startLoading();

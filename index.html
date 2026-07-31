@@ -8,18 +8,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260731-finalpolish" />
+    <link rel="stylesheet" href="styles.css?v=20260731-mapui" />
   </head>
   <body class="loading-active">
     <section id="loadingView" class="loading-view" aria-label="遊戲載入中">
       <div class="loading-shade"></div>
       <div class="loading-brand">
-        <span class="loading-moon">☾</span>
-        <small>MOONLIGHT DINER</small>
-        <h1>月光食堂物語</h1>
-        <p>今晚，也為努力生活的人留一盞燈。</p>
-        <div class="loading-track"><i id="loadingBar"></i></div>
-        <b id="loadingText">準備餐車中… 0%</b>
+        <div class="loading-title-lockup">
+          <span class="loading-moon">☾</span>
+          <small>MOONLIGHT DINER</small>
+          <h1>月光食堂物語</h1>
+          <p>今晚，也為晚歸的人留一盞燈。</p>
+        </div>
+        <div class="loading-console">
+          <p class="loading-tip"><strong>TIP!</strong><span>連續出餐可以累積加成，別讓客人等太久。</span></p>
+          <div class="loading-status"><b id="loadingText">準備餐車中…</b><strong id="loadingPercent">0%</strong></div>
+          <div class="loading-track"><i id="loadingBar"></i></div>
+        </div>
       </div>
     </section>
     <div class="sky-decor" aria-hidden="true"></div>
@@ -65,9 +70,9 @@
             </div>
 
             <nav class="chapter-actions" aria-label="餐車功能">
-              <button id="upgradeButton" class="soft-button" type="button"><span>♨</span><b>廚房升級</b></button>
-              <button id="buddyButton" class="soft-button" type="button"><span>✦</span><b>夥伴管理</b></button>
-              <button id="achievementButton" class="soft-button" type="button"><span>★</span><b>成就日誌</b></button>
+              <button id="upgradeButton" class="soft-button" type="button" aria-label="廚房升級" title="廚房升級"><span>♨</span><b>廚房升級</b></button>
+              <button id="buddyButton" class="soft-button" type="button" aria-label="夥伴管理" title="夥伴管理"><span>✦</span><b>夥伴管理</b></button>
+              <button id="achievementButton" class="soft-button" type="button" aria-label="成就日誌" title="成就日誌"><span>★</span><b>成就日誌</b></button>
             </nav>
           </div>
         </section>
@@ -221,6 +226,6 @@
     </div>
 
     <div id="toast" class="toast" aria-live="assertive"></div>
-    <script src="game.js?v=20260731-chapter1"></script>
+    <script src="game.js?v=20260731-mapui"></script>
   </body>
 </html>
