@@ -1313,3 +1313,335 @@ button:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
 }
 .design-layer .orders { height: 113px; }
 .design-layer .kitchen-zone { height: 255px; }
+
+/* Moonlight market theme — scene-led, toy-like kitchen inspired by casual cooking games. */
+.design-layer .game-hud {
+  position: relative;
+  z-index: 20;
+  color: #fff8ec;
+  border-bottom: 3px solid #743b35;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.18),transparent 45%),
+    linear-gradient(180deg,#b56343,#7d3e35);
+  box-shadow: inset 0 -5px rgba(77,32,29,.3),0 5px 13px rgba(74,32,43,.34);
+}
+.design-layer .back-button,
+.design-layer .hud-stat {
+  border-color: rgba(255,239,213,.34);
+  background: rgba(91,42,35,.34);
+  box-shadow: inset 0 1px rgba(255,255,255,.16);
+}
+.design-layer .fullscreen-button { color: #ffe58a; }
+.design-layer .mission-progress > i {
+  background: rgba(76,32,29,.48);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.22);
+}
+.design-layer .mission-progress > i span {
+  background: linear-gradient(90deg,#5be0e3,#b9f56f);
+  box-shadow: 0 0 6px rgba(112,239,220,.7);
+}
+.design-layer .hud-stat small { color: #f4cfc0; }
+
+.design-layer .customer-zone {
+  isolation: isolate;
+  border-bottom: 4px solid #b83e73;
+  background:
+    radial-gradient(circle at 8% 72%,#95d451 0 27px,#67b43d 28px 35px,transparent 36px),
+    radial-gradient(circle at 91% 70%,#9be058 0 31px,#67b43d 32px 40px,transparent 41px),
+    linear-gradient(180deg,transparent 0 49%,rgba(255,255,255,.46) 50% 52%,transparent 53%),
+    linear-gradient(180deg,#c9f2f3 0 49%,#72d3e6 50% 68%,#f7e3bc 69% 100%);
+  box-shadow:
+    inset 17px 0 #e54f91,
+    inset -17px 0 #e54f91,
+    inset 0 -8px #ee72a6,
+    inset 0 9px rgba(137,41,82,.25);
+}
+.design-layer .riverside-view {
+  position: absolute;
+  z-index: -1;
+  inset: 19px 18px 18px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.design-layer .riverside-view::before {
+  position: absolute;
+  right: 65px;
+  bottom: 47px;
+  left: 65px;
+  height: 38px;
+  content: "";
+  opacity: .68;
+  background: #83b4b8;
+  clip-path: polygon(0 100%,0 61%,6% 61%,6% 30%,12% 30%,12% 68%,17% 68%,17% 10%,22% 10%,22% 60%,29% 60%,29% 38%,35% 38%,35% 70%,42% 70%,42% 18%,48% 18%,48% 64%,55% 64%,55% 39%,62% 39%,62% 71%,70% 71%,70% 7%,76% 7%,76% 58%,82% 58%,82% 28%,88% 28%,88% 67%,94% 67%,94% 43%,100% 43%,100% 100%);
+}
+.design-layer .riverside-view::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 22px;
+  content: "";
+  border-top: 3px solid rgba(255,255,255,.8);
+  background:
+    repeating-linear-gradient(135deg,transparent 0 20px,rgba(174,127,86,.13) 21px 22px),
+    #f6dfb8;
+  box-shadow: 0 -3px rgba(49,165,189,.22);
+}
+.design-layer .riverside-view i {
+  position: absolute;
+  z-index: 2;
+  bottom: 16px;
+  width: 54px;
+  height: 25px;
+  border-radius: 50% 50% 35% 35%;
+  background: #85cf45;
+  box-shadow: inset 0 -7px #64ad38,16px 3px 0 -5px #9bdf55,-15px 5px 0 -7px #72be3d;
+}
+.design-layer .riverside-view i:nth-child(1) { left: 17px; }
+.design-layer .riverside-view i:nth-child(2) { right: 19px; width: 62px; }
+.design-layer .riverside-view i:nth-child(3) { right: 44%; bottom: 18px; width: 38px; height: 13px; }
+.design-layer .restaurant-awning {
+  height: 19px;
+  padding: 0 15px;
+  background: #b3326d;
+  filter: drop-shadow(0 4px 3px rgba(108,34,67,.28));
+}
+.design-layer .restaurant-awning i {
+  border-radius: 0 0 10px 10px;
+  background: linear-gradient(90deg,#f9d6e6,#fff2e0);
+  box-shadow: inset 0 -3px rgba(152,57,85,.12);
+}
+.design-layer .restaurant-awning i:nth-child(even) {
+  background: linear-gradient(90deg,#ec4f8c,#d83b7c);
+}
+.design-layer .wall-lamp {
+  z-index: 6;
+  top: 56px;
+  color: #9a5c24;
+  border-color: #fff0bc;
+  background: radial-gradient(circle at 35% 28%,#fffdf1 0 24%,#ffe09a 27% 60%,#db9d4d 63%);
+  box-shadow: 0 0 10px rgba(255,224,143,.9),0 3px 0 rgba(140,53,77,.3);
+}
+.design-layer .lamp-left { left: 6px; }
+.design-layer .lamp-right { right: 6px; }
+.design-layer .zone-heading .eyebrow {
+  color: #fff8e6;
+  border: 2px solid rgba(255,255,255,.55);
+  background: linear-gradient(#a95d3f,#7b3a32);
+  box-shadow: 0 2px 0 rgba(87,36,30,.32);
+}
+.design-layer .orders {
+  z-index: 4;
+  gap: 23px;
+  padding: 0 60px;
+}
+.design-layer .order-content {
+  border: 3px solid rgba(255,255,255,.96);
+  background: linear-gradient(180deg,rgba(255,255,255,.98),#fff7e8);
+  box-shadow: 0 6px 0 rgba(118,63,60,.17),0 10px 17px rgba(75,53,74,.18);
+}
+.design-layer .order-content::after {
+  border-color: white;
+  background: #fff7e8;
+}
+.design-layer .order-content > small {
+  color: #ffecc6;
+  background: linear-gradient(#8e4b3b,#60312f);
+}
+.design-layer .dish-ticket {
+  border: 1px solid #f2dec1;
+  background: #fff1d8;
+  box-shadow: inset 0 -2px rgba(211,172,119,.18);
+}
+.design-layer .customer-face {
+  color: #fff;
+  border-color: #fff4ce;
+  background-image: linear-gradient(145deg,rgba(255,255,255,.28),transparent 45%);
+  box-shadow: inset 0 -5px rgba(87,42,55,.13),0 4px 0 rgba(127,61,74,.24);
+}
+.design-layer .patience {
+  background: #eadbc6;
+  box-shadow: 0 2px 0 rgba(99,53,50,.18);
+}
+.design-layer .patience i { background: linear-gradient(90deg,#52d7ca,#93e26c); }
+
+.design-layer .kitchen-zone {
+  border-right: 8px solid #de4c8c;
+  border-left: 8px solid #de4c8c;
+  background:
+    linear-gradient(rgba(255,255,255,.28) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.28) 1px,transparent 1px),
+    linear-gradient(180deg,#f5a5cb 0 46%,#ca7656 46% 100%);
+  background-size: 22px 22px,22px 22px,auto;
+  box-shadow: inset 0 10px 18px rgba(119,39,75,.13);
+}
+.design-layer .kitchen-zone::before {
+  height: 45%;
+  border-top: 8px solid #ffc58d;
+  background:
+    linear-gradient(90deg,rgba(124,67,44,.1) 1px,transparent 1px),
+    linear-gradient(180deg,#d98c5f,#b7674d);
+  background-size: 31px 100%,auto;
+  box-shadow: inset 0 6px rgba(255,255,255,.18),0 -4px 0 #9e4d43;
+}
+.design-layer .kitchen-backdrop .window-scene { display: none; }
+.design-layer .shelf {
+  top: 38px;
+  border: 2px solid #fff0d8;
+  background: #b95d55;
+  box-shadow: 0 4px 0 #8f4240;
+}
+.design-layer .shelf i {
+  border: 2px solid #fff7e8;
+  background: #fff0cf;
+  box-shadow: inset 0 -7px #f07479;
+}
+.design-layer .shelf i:nth-child(2) { box-shadow: inset 0 -9px #59d0c4; }
+.design-layer .hanging-pan {
+  border-color: #8d5470;
+  background: linear-gradient(145deg,#dba4b9,#a86581);
+}
+.design-layer .hanging-pan::before { background: #8d5470; }
+.design-layer .hanging-spoon { color: #8d5470; }
+.design-layer .chef-character {
+  bottom: 69px;
+  filter: drop-shadow(0 4px 2px rgba(92,43,43,.24));
+}
+.design-layer .chef-ears {
+  background: #c8875c;
+  box-shadow: -11px -8px 0 #aa6549,11px -8px 0 #aa6549,inset 0 -6px rgba(113,53,42,.14);
+}
+.design-layer .chef-hat {
+  color: #e95878;
+  border: 2px solid #f3d9c4;
+  background: #fff8e8;
+  box-shadow: 0 3px 0 rgba(119,57,52,.15);
+}
+.design-layer .chef-body {
+  border: 2px solid #f3d9c4;
+  background: #fff7e1;
+}
+.design-layer .chef-body::after { background: #ef607d; }
+.design-layer .counter-surface {
+  border-top-color: #ffe1a8;
+  border-bottom-color: #9e4f42;
+  background: linear-gradient(180deg,#ffc68b,#e88c65);
+  box-shadow: inset 0 4px rgba(255,255,255,.28),0 5px 9px rgba(99,45,39,.27);
+}
+.design-layer .zone-title > span {
+  border-color: #fff9e8;
+  background: linear-gradient(#ff7d87,#db4d71);
+}
+.design-layer .zone-title h3 {
+  border: 1px solid rgba(255,255,255,.28);
+  background: linear-gradient(#8d4a3c,#60312f);
+  box-shadow: 0 2px 0 rgba(82,37,32,.25);
+}
+
+.design-layer .recipe-panel {
+  border-color: #a14842;
+  background: linear-gradient(180deg,#ef856a,#d65e5a);
+  box-shadow: inset 0 3px rgba(255,255,255,.24),0 4px 0 #853d3b,0 6px 11px rgba(90,41,38,.2);
+}
+.design-layer .recipe-button {
+  border-color: #ffe3ad;
+  background: linear-gradient(180deg,#fffaf0,#ffedc9);
+  box-shadow: inset 0 -4px #eac58f,0 2px 0 rgba(120,66,45,.12);
+}
+.design-layer .recipe-button.selected {
+  border-color: #fff8cd;
+  background: white;
+  box-shadow: 0 0 0 2px #f35871,inset 0 -4px #f5d7a7,0 0 9px rgba(255,211,99,.62);
+}
+.design-layer .recipe-button > span {
+  border-color: #fff9e9;
+  box-shadow: inset 0 -5px rgba(68,42,47,.12),0 3px 0 rgba(122,67,53,.18);
+}
+.design-layer .cookers {
+  gap: 5px;
+  padding: 6px;
+  border: 3px solid #8b4650;
+  border-radius: 14px;
+  background: linear-gradient(180deg,#394052,#222938);
+  box-shadow: inset 0 3px rgba(255,255,255,.1),0 4px 0 #6f3640,0 7px 12px rgba(76,35,42,.26);
+}
+.design-layer .cooker {
+  min-height: 63px;
+  border-color: #525b6d;
+  background:
+    radial-gradient(circle at 50% 38%,#141a29 0 22px,#2f3748 23px 29px,transparent 30px),
+    linear-gradient(145deg,#6f7685,#424958);
+  box-shadow: inset 0 -4px rgba(0,0,0,.24),inset 0 2px rgba(255,255,255,.13);
+}
+.design-layer .cooker::after {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 5px;
+  height: 5px;
+  content: "";
+  border-radius: 50%;
+  background: #70e172;
+  box-shadow: -8px 0 #f3c95b;
+}
+.design-layer .cooker.locked::after { background: #8b9098; box-shadow: -8px 0 #6f757f; }
+.design-layer .cooker.ready {
+  box-shadow: inset 0 -4px rgba(0,0,0,.2),0 0 0 3px #ffdf72,0 0 15px rgba(255,218,104,.84);
+}
+.design-layer .plates {
+  border-color: #aa5149;
+  background:
+    linear-gradient(rgba(181,104,62,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(181,104,62,.09) 1px,transparent 1px),
+    linear-gradient(180deg,#ffd695,#f1a96f);
+  background-size: 18px 18px,18px 18px,auto;
+  box-shadow: inset 0 3px rgba(255,255,255,.35),0 4px 0 #853f3b,0 7px 12px rgba(78,37,34,.22);
+}
+.design-layer .plate {
+  border-color: #fff7d3;
+  background: linear-gradient(145deg,#fffdf3,#f6e8c5);
+  box-shadow: inset 0 -5px #ddc79f,0 2px 0 rgba(137,78,45,.15);
+}
+.design-layer .plate.active {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px #ef5976,inset 0 -5px #e8d6b6,0 0 9px rgba(255,218,107,.64);
+}
+.design-layer .topping-panel {
+  border-color: #994943;
+  background: linear-gradient(#ed8468,#d86059);
+  box-shadow: inset 0 3px rgba(255,255,255,.24),0 4px 0 #773836,0 7px 12px rgba(78,36,34,.2);
+}
+.design-layer .topping-panel button {
+  border-color: #ffe5b5;
+  background: linear-gradient(#fffaf0,#ffecc5);
+  box-shadow: inset 0 -4px #e6c18e;
+}
+.design-layer .topping-panel button:hover {
+  border-color: white;
+  box-shadow: 0 0 0 2px #f25b77,inset 0 -4px #e6c18e;
+}
+.design-layer .topping-panel span {
+  background: linear-gradient(#fff,#f6e8cc);
+  box-shadow: inset 0 -3px #e0cda7,0 2px 0 rgba(121,66,46,.16);
+}
+.design-layer .game-footer {
+  border-top: 3px solid #743b35;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.12),transparent 40%),
+    linear-gradient(180deg,#a75643,#73383a);
+  box-shadow: inset 0 3px rgba(255,255,255,.1),0 -4px 9px rgba(93,38,50,.25);
+}
+.design-layer .combo-panel span,
+.design-layer .skill-button small { color: #f2c6b6; }
+.design-layer .combo-panel > i { background: rgba(67,27,31,.45); }
+.design-layer .combo-panel > i span { background: linear-gradient(90deg,#ffe06e,#ff8a72); }
+.design-layer .game-message { color: #fff0da; }
+.design-layer .skill-button {
+  border-color: rgba(255,239,213,.38);
+  background: rgba(72,31,36,.34);
+  box-shadow: inset 0 2px rgba(255,255,255,.1);
+}
+.design-layer .skill-avatar {
+  border-color: #fff3d3;
+  box-shadow: 0 2px 0 rgba(63,28,33,.28);
+}

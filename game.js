@@ -841,9 +841,10 @@
     const view = $("#gameView");
     const canvas = $("#gameCanvas");
     if (!view || !canvas || view.classList.contains("hidden")) return;
-    const availableWidth = view.clientWidth;
-    const availableHeight = document.fullscreenElement ? window.innerHeight : GAME_HEIGHT;
-    const scale = Math.min(1, availableWidth / GAME_WIDTH, availableHeight / GAME_HEIGHT);
+    const viewport = window.visualViewport;
+    const availableWidth = viewport?.width || view.clientWidth || window.innerWidth;
+    const availableHeight = viewport?.height || window.innerHeight;
+    const scale = Math.min(availableWidth / GAME_WIDTH, availableHeight / GAME_HEIGHT);
     const showRotateHint = availableWidth < 700 && window.innerHeight > window.innerWidth;
     canvas.style.setProperty("--game-scale", String(scale));
     view.style.height = `${GAME_HEIGHT * scale + (showRotateHint ? 44 : 0)}px`;
@@ -931,6 +932,7 @@
     if (event.target === modal && modal !== els.resultModal) closeModal(modal);
   }));
   window.addEventListener("resize", fitGameCanvas);
+  window.visualViewport?.addEventListener("resize", fitGameCanvas);
   document.addEventListener("fullscreenchange", fitGameCanvas);
 
   renderLobby();
