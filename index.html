@@ -84,19 +84,23 @@
           <div id="gameCanvas" class="game-canvas">
           <div class="design-layer">
           <div class="game-hud">
-            <button id="leaveGameButton" class="back-button icon-button icon-back" type="button"><i aria-hidden="true"></i><span>地圖</span></button>
-            <button id="fullscreenButton" class="back-button fullscreen-button icon-button icon-fullscreen" type="button"><i aria-hidden="true"></i><span>全螢幕</span></button>
+            <button id="leaveGameButton" class="back-button icon-button icon-back" type="button" aria-label="離開關卡並回到地圖"><i aria-hidden="true"></i><span>地圖</span></button>
+            <button id="fullscreenButton" class="back-button fullscreen-button icon-button icon-fullscreen" type="button" aria-label="切換全螢幕"><i aria-hidden="true"></i><span>全螢幕</span></button>
             <div class="mission-summary">
               <small id="gameLevelLabel">關卡 1</small>
               <strong id="missionLabel">提供 8 道料理</strong>
             </div>
-            <div class="mission-progress">
+            <div class="mission-progress" aria-label="任務進度">
               <span id="missionCurrent">0</span><small>/</small><b id="missionTarget">8</b>
               <i><span id="missionBar"></span></i>
             </div>
-            <div class="hud-stat"><small>時間</small><strong id="gameTime">90</strong></div>
-            <div class="hud-stat"><small>分數</small><strong id="gameScore">0</strong></div>
-            <div class="hud-stat"><small>金幣</small><strong id="gameCoins">0</strong></div>
+            <div class="hud-stat time-stat"><small>剩餘時間</small><strong id="gameTime" aria-live="off">90</strong></div>
+            <div class="hud-stat score-stat"><small>分數</small><strong id="gameScore">0</strong></div>
+            <div class="hud-stat coin-stat"><small>金幣</small><strong id="gameCoins">0</strong></div>
+          </div>
+
+          <div id="gameFeedback" class="game-feedback" role="status" aria-live="polite" aria-atomic="true">
+            <strong></strong><span></span>
           </div>
 
           <section class="customer-zone">
@@ -109,7 +113,7 @@
               <div id="conditionBadges" class="condition-badges"></div>
             </div>
             <div id="waveBanner" class="wave-banner hidden">WAVE <b>1</b> / 3</div>
-            <div id="orders" class="orders"></div>
+            <div id="orders" class="orders" aria-label="客人訂單"></div>
           </section>
 
           <section class="kitchen-zone">
@@ -151,11 +155,12 @@
               <span>COMBO</span><strong id="comboCount">x0</strong>
               <i><span id="comboTimer"></span></i>
             </div>
-            <div id="gameMessage" class="game-message"><span class="message-spark" aria-hidden="true"></span><p>先選主食，再點空的設備開始料理。</p></div>
-            <button id="buddySkillButton" class="skill-button" type="button">
+            <div id="gameMessage" class="game-message" role="status" aria-live="polite"><span class="message-spark" aria-hidden="true"></span><p>先選主食，再點空的設備開始料理。</p></div>
+            <button id="buddySkillButton" class="skill-button" type="button" aria-label="使用夥伴技能">
               <span class="skill-avatar" aria-hidden="true"></span>
               <span><small>夥伴技能</small><strong>星光鼓舞</strong></span>
               <i id="skillCooldown"></i>
+              <b id="skillCooldownLabel" class="skill-cooldown-label" aria-hidden="true"></b>
             </button>
           </footer>
           </div>
