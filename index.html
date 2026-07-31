@@ -2,15 +2,26 @@
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#15172f" />
     <title>月光食堂物語</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260731-visual" />
+    <link rel="stylesheet" href="styles.css?v=20260731-chapter1d" />
   </head>
-  <body>
+  <body class="loading-active">
+    <section id="loadingView" class="loading-view" aria-label="遊戲載入中">
+      <div class="loading-shade"></div>
+      <div class="loading-brand">
+        <span class="loading-moon">☾</span>
+        <small>MOONLIGHT DINER</small>
+        <h1>月光食堂物語</h1>
+        <p>今晚，也為努力生活的人留一盞燈。</p>
+        <div class="loading-track"><i id="loadingBar"></i></div>
+        <b id="loadingText">準備餐車中… 0%</b>
+      </div>
+    </section>
     <div class="sky-decor" aria-hidden="true"></div>
     <div id="app" class="app">
       <header class="app-header">
@@ -26,44 +37,39 @@
       </header>
 
       <main>
-        <section id="lobbyView" class="view lobby-view">
-          <div class="hero-card">
-            <div>
-              <span class="eyebrow">CHEF JOURNEY</span>
-              <h1>今晚，想在哪裡開店？</h1>
-              <p>完成關卡、升級設備，讓月光市集的每一位客人吃飽回家。</p>
-            </div>
-            <div class="hero-actions">
-              <button id="upgradeButton" class="soft-button" type="button"><span>⚙</span> 廚房升級</button>
-              <button id="buddyButton" class="soft-button" type="button"><span>✦</span> 夥伴管理</button>
-              <button id="achievementButton" class="soft-button" type="button"><span>★</span> 成就日誌</button>
-            </div>
-          </div>
+        <section id="lobbyView" class="view lobby-view chapter-view">
+          <div class="chapter-stage">
+            <div class="chapter-vignette" aria-hidden="true"></div>
+            <header class="chapter-title">
+              <small id="restaurantChapter">章節一 · CHAPTER 01</small>
+              <h1 id="restaurantName">照顧疲憊的上班族</h1>
+              <p>在最後一班電車離站以前，端出一碗讓人重新振作的拉麵。</p>
+            </header>
 
-          <div id="dailyBanner" class="daily-banner">
-            <span class="daily-icon">☀</span>
-            <div><small>DAILY SERVICE</small><strong>今日主廚挑戰</strong><p>完成任意 2 關，可獲得 120 金幣。</p></div>
-            <div class="daily-progress"><b id="dailyProgress">0 / 2</b><i><span id="dailyBar"></span></i></div>
-            <button id="claimDailyButton" type="button" disabled>領取</button>
-          </div>
+            <div id="restaurantTabs" class="restaurant-tabs chapter-theme-tab"></div>
+            <article id="restaurantPreview" class="chapter-story-card"></article>
 
-          <section class="journey-section">
-            <div class="section-heading">
-              <div><span class="eyebrow">RESTAURANT MAP</span><h2>餐車旅程</h2></div>
-              <p id="journeySummary">0 / 8 關完成</p>
+            <div class="chapter-progress">
+              <span>章節進度</span>
+              <strong id="restaurantCompletion">0 / 5</strong>
+              <small id="journeySummary">0 / 5 關完成</small>
             </div>
-            <div id="restaurantTabs" class="restaurant-tabs"></div>
-            <div class="restaurant-stage">
-              <article id="restaurantPreview" class="restaurant-preview"></article>
-              <div>
-                <div class="level-heading">
-                  <div><small id="restaurantChapter">CHAPTER 01</small><h3 id="restaurantName">月光拉麵舖</h3></div>
-                  <span id="restaurantCompletion">0 / 4</span>
-                </div>
-                <div id="levelGrid" class="level-grid"></div>
-              </div>
+
+            <div id="levelGrid" class="level-grid chapter-level-grid"></div>
+
+            <div id="dailyBanner" class="daily-banner chapter-daily">
+              <span class="daily-icon">☀</span>
+              <div><small>今日主廚挑戰</small><strong>完成任意 2 關</strong></div>
+              <div class="daily-progress"><b id="dailyProgress">0 / 2</b><i><span id="dailyBar"></span></i></div>
+              <button id="claimDailyButton" type="button" disabled>領取 120 ●</button>
             </div>
-          </section>
+
+            <nav class="chapter-actions" aria-label="餐車功能">
+              <button id="upgradeButton" class="soft-button" type="button"><span>♨</span><b>廚房升級</b></button>
+              <button id="buddyButton" class="soft-button" type="button"><span>✦</span><b>夥伴管理</b></button>
+              <button id="achievementButton" class="soft-button" type="button"><span>★</span><b>成就日誌</b></button>
+            </nav>
+          </div>
         </section>
 
         <section id="gameView" class="view game-view hidden">
@@ -215,6 +221,6 @@
     </div>
 
     <div id="toast" class="toast" aria-live="assertive"></div>
-    <script src="game.js?v=20260731-fit"></script>
+    <script src="game.js?v=20260731-chapter1"></script>
   </body>
 </html>

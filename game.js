@@ -9,12 +9,12 @@
   const RESTAURANTS = {
     ramen: {
       id: "ramen",
-      chapter: "CHAPTER 01",
-      name: "月光拉麵舖",
-      subtitle: "星空下的一碗暖湯",
+      chapter: "章節一 · CHAPTER 01",
+      name: "照顧疲憊的上班族",
+      subtitle: "日式深夜拉麵車",
       icon: "☾",
-      color: "#62d3bd",
-      description: "掌握湯底與配料的節奏，照顧深夜造訪的旅人。",
+      color: "#ef7657",
+      description: "車站旁的辦公街區總有人晚歸。今晚，讓月光拉麵車成為他們回家前的一盞暖燈。",
       recipes: {
         salt: { name: "月白鹽味", icon: "☾", time: 2600, color: "#62d3bd" },
         miso: { name: "緋紅味噌", icon: "◆", time: 3300, color: "#ff7352" },
@@ -26,35 +26,11 @@
         chili: { name: "火焰椒", icon: "♨" },
       },
       levels: [
-        { id: 1, mode: "serve", target: 7, time: 85, reward: 90, title: "第一碗月光", description: "在時間內提供 7 道料理。", maxDishes: 1 },
-        { id: 2, mode: "likes", target: 6, time: 90, reward: 120, title: "笑容招待", description: "在客人耐心高於讚線時出餐，收集 6 個讚。", maxDishes: 2 },
-        { id: 3, mode: "score", target: 820, time: 90, reward: 160, title: "連擊之夜", description: "利用快速出餐與 Combo 達到 820 分。", maxDishes: 2, failBurn: true },
-        { id: 4, mode: "course", target: 12, moves: 18, time: 110, reward: 230, title: "銀河套餐", description: "在 18 次出餐機會內完成三個 Wave。", maxDishes: 2, waves: [3, 3, 3] },
-      ],
-    },
-    sweets: {
-      id: "sweets",
-      chapter: "CHAPTER 02",
-      name: "雲朵甜點屋",
-      subtitle: "漂浮在天空的甜蜜餐車",
-      icon: "☁",
-      color: "#f28ca6",
-      description: "甜點需要耐心，但客人可等不了太久。",
-      recipes: {
-        pancake: { name: "雲朵鬆餅", icon: "◎", time: 3000, color: "#eab55f" },
-        waffle: { name: "星格鬆餅", icon: "▦", time: 3700, color: "#d58b52" },
-        souffle: { name: "月球舒芙蕾", icon: "◒", time: 4500, color: "#f1b6c2" },
-      },
-      toppings: {
-        berry: { name: "流星莓果", icon: "●" },
-        cream: { name: "銀河鮮奶油", icon: "♢" },
-        honey: { name: "晨光蜂蜜", icon: "⌁" },
-      },
-      levels: [
-        { id: 1, mode: "serve", target: 8, time: 85, reward: 130, title: "甜蜜開張", description: "完成 8 份甜點訂單。", maxDishes: 2 },
-        { id: 2, mode: "likes", target: 8, time: 90, reward: 165, title: "五星招待", description: "趁客人開心時送上甜點，取得 8 個讚。", maxDishes: 2, failLeave: true },
-        { id: 3, mode: "score", target: 1150, time: 95, reward: 210, title: "甜點交響曲", description: "提升設備並串起 Combo，取得 1150 分。", maxDishes: 3, failDiscard: true },
-        { id: 4, mode: "customer", target: 11, customers: 8, time: 120, reward: 300, title: "雲端派對", description: "只能接待 8 位客人，完成 11 道料理。", maxDishes: 2 },
+        { id: 1, mode: "serve", target: 6, time: 90, reward: 90, title: "開始營業的第一天", description: "車站旁第一次亮起餐車燈。先熟悉選麵、熬煮、盛盤與加料。", story: "剛下班的年輕職員停下腳步，他看起來已經很久沒有好好吃飯。", maxDishes: 1, atmosphere: "first-night" },
+        { id: 2, mode: "likes", target: 6, time: 90, reward: 120, title: "下班後的一碗暖湯", description: "在客人仍有笑容時完成料理，收集 6 個讚。", story: "疲憊不只需要填飽肚子，一碗及時端上的熱湯也能讓人安心。", maxDishes: 1, atmosphere: "warm-soup" },
+        { id: 3, mode: "serve", target: 10, time: 88, reward: 165, title: "突如其來的加班潮", description: "辦公大樓同時熄燈，大批客人湧向餐車。完成 10 道料理。", story: "專案終於告一段落，但所有人都在同一時間餓著肚子下班。", maxDishes: 2, failBurn: true, atmosphere: "rush-hour" },
+        { id: 4, mode: "score", target: 1050, time: 95, reward: 210, title: "深夜最後一班車", description: "利用快速出餐與 Combo，在末班車前取得 1050 分。", story: "月台廣播響起。這一餐必須又快又準，不能讓任何人空著肚子趕車。", maxDishes: 2, atmosphere: "last-train" },
+        { id: 5, mode: "course", target: 12, moves: 18, time: 115, reward: 300, title: "上班族的感謝祭", description: "在 18 次出餐機會內完成三波訂單，為第一章畫下句點。", story: "曾經被拉麵溫暖的人們再次回來，這次他們帶來了笑容與一封感謝信。", maxDishes: 2, waves: [3, 3, 3], atmosphere: "thank-you-night" },
       ],
     },
   };
@@ -82,7 +58,7 @@
     firstClear: { name: "第一次營業", description: "完成任意關卡", target: 1, reward: 2, stat: "clears" },
     serve30: { name: "熟練主廚", description: "累積提供 30 道料理", target: 30, reward: 3, stat: "served" },
     combo8: { name: "節奏大師", description: "達成 8 Combo", target: 8, reward: 3, stat: "bestCombo" },
-    allRamen: { name: "月光傳說", description: "完成月光拉麵舖全部關卡", target: 4, reward: 5, stat: "ramenClears" },
+    allRamen: { name: "上班族的暖燈", description: "完成章節一全部 5 個關卡", target: 5, reward: 5, stat: "ramenClears" },
   };
 
   const CUSTOMER_FACES = [
@@ -96,6 +72,7 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const els = {
+    loading: $("#loadingView"), loadingBar: $("#loadingBar"), loadingText: $("#loadingText"),
     lobby: $("#lobbyView"), game: $("#gameView"), profileCoins: $("#profileCoins"), profileGems: $("#profileGems"),
     restaurantTabs: $("#restaurantTabs"), preview: $("#restaurantPreview"), levelGrid: $("#levelGrid"),
     restaurantChapter: $("#restaurantChapter"), restaurantName: $("#restaurantName"), restaurantCompletion: $("#restaurantCompletion"),
@@ -212,25 +189,17 @@
     ensureDaily();
     renderResources();
     const restaurant = RESTAURANTS[selectedRestaurant];
-    els.restaurantTabs.innerHTML = Object.values(RESTAURANTS).map((item) => {
-      const unlocked = isRestaurantUnlocked(item.id);
-      return `<button class="restaurant-tab ${item.id === selectedRestaurant ? "active" : ""} ${unlocked ? "" : "locked"}" data-restaurant="${item.id}" type="button">
-        <span style="background:${item.color}">${unlocked ? item.icon : "⌕"}</span>
-        <div><small>${item.chapter}</small><strong>${item.name}</strong></div>
-        ${unlocked ? "" : "<i>完成前一餐廳解鎖</i>"}
-      </button>`;
-    }).join("");
+    els.restaurantTabs.innerHTML = `<button class="restaurant-tab active" data-restaurant="ramen" type="button">
+      <span style="background:${restaurant.color}">${restaurant.icon}</span>
+      <div><small>本章餐車</small><strong>${restaurant.subtitle}</strong></div>
+    </button>`;
     $$(".restaurant-tab").forEach((button) => button.addEventListener("click", () => {
-      if (!isRestaurantUnlocked(button.dataset.restaurant)) return showToast("完成月光拉麵舖第 4 關即可解鎖");
       selectedRestaurant = button.dataset.restaurant;
       renderLobby();
       playTone(430, .06);
     }));
 
-    els.preview.innerHTML = `<div class="preview-art" style="--accent:${restaurant.color}">
-      <span class="preview-moon">${restaurant.icon}</span><div class="preview-shop"><i></i><b>${restaurant.name}</b></div>
-      <span class="preview-cloud one"></span><span class="preview-cloud two"></span>
-    </div><small>${restaurant.subtitle}</small><h3>${restaurant.name}</h3><p>${restaurant.description}</p>`;
+    els.preview.innerHTML = `<span class="story-kicker">本章故事</span><strong>${restaurant.subtitle}</strong><p>${restaurant.description}</p>`;
     els.restaurantChapter.textContent = restaurant.chapter;
     els.restaurantName.textContent = restaurant.name;
     const completedCount = restaurant.levels.filter((level) => profile.completed[stageKey(restaurant.id, level.id)]).length;
@@ -239,12 +208,11 @@
       const key = stageKey(restaurant.id, level.id);
       const unlocked = isLevelUnlocked(restaurant.id, level.id);
       const stars = profile.stars[key] || 0;
-      return `<button class="level-card ${unlocked ? "" : "locked"} ${profile.completed[key] ? "cleared" : ""}" data-level="${level.id}" type="button">
-        <span class="level-number">${unlocked ? level.id : "⌕"}</span>
-        <span class="level-mode">${modeIcon(level.mode)} ${modeName(level.mode)}</span>
-        <strong>${level.title}</strong><small>${missionText(level)}</small>
-        <span class="level-stars">${[1,2,3].map((n) => n <= stars ? "★" : "☆").join(" ")}</span>
-        <i>+${level.reward} ●</i>
+      return `<button class="level-card chapter-node ${unlocked ? "" : "locked"} ${profile.completed[key] ? "cleared" : ""}" data-level="${level.id}" type="button" aria-label="1-${level.id} ${level.title}">
+        <span class="node-glow"></span>
+        <span class="level-number">${unlocked ? `1-${level.id}` : "⌕"}</span>
+        <span class="level-stars">${[1,2,3].map((n) => n <= stars ? "★" : "☆").join("")}</span>
+        <span class="level-tooltip"><small>${modeIcon(level.mode)} ${modeName(level.mode)}</small><strong>${level.title}</strong><i>${missionText(level)}</i></span>
       </button>`;
     }).join("");
     $$(".level-card").forEach((button) => button.addEventListener("click", () => {
@@ -254,13 +222,13 @@
       openBriefing();
     }));
 
-    const totalCompleted = Object.values(profile.completed).filter(Boolean).length;
-    els.journeySummary.textContent = `${totalCompleted} / 8 關完成`;
+    const totalCompleted = restaurant.levels.filter((level) => profile.completed[stageKey(restaurant.id, level.id)]).length;
+    els.journeySummary.textContent = `${totalCompleted} / ${restaurant.levels.length} 關完成`;
     const plays = Math.min(2, profile.daily.plays);
     els.dailyProgress.textContent = `${plays} / 2`;
     els.dailyBar.style.width = `${plays / 2 * 100}%`;
     els.claimDaily.disabled = plays < 2 || profile.daily.claimed;
-    els.claimDaily.textContent = profile.daily.claimed ? "已領取" : "領取";
+    els.claimDaily.textContent = profile.daily.claimed ? "今日已領取" : "領取 120 ●";
   }
 
   function openBriefing() {
@@ -268,8 +236,8 @@
     const level = restaurant.levels[selectedLevel - 1];
     selectedBoosters = [];
     els.briefingMode.textContent = modeName(level.mode);
-    els.briefingTitle.textContent = `${restaurant.name} · 第 ${level.id} 關`;
-    els.briefingDescription.textContent = level.description;
+    els.briefingTitle.textContent = `1-${level.id} ${level.title}`;
+    els.briefingDescription.textContent = `${level.story} ${level.description}`;
     const constraints = [
       `<div><span>${modeIcon(level.mode)}</span><small>關卡目標</small><strong>${missionText(level)}</strong></div>`,
       `<div><span>◷</span><small>限制時間</small><strong>${level.time} 秒</strong></div>`,
@@ -394,6 +362,7 @@
     else fillOrders();
     els.lobby.classList.add("hidden");
     els.game.classList.remove("hidden");
+    els.game.dataset.stage = level.atmosphere;
     document.body.classList.add("playing");
     fitGameCanvas();
     renderGameStatic();
@@ -430,7 +399,7 @@
 
   function renderGameStatic() {
     const { restaurant, level, upgrades } = game;
-    els.gameLevelLabel.textContent = `${restaurant.name} · 第 ${level.id} 關`;
+    els.gameLevelLabel.textContent = `章節一 · 1-${level.id} ${level.title}`;
     els.missionLabel.textContent = missionText(level);
     els.missionTarget.textContent = level.target;
     els.conditionBadges.innerHTML = [
@@ -832,6 +801,7 @@
     closeAllModals();
     els.game.classList.add("hidden");
     els.lobby.classList.remove("hidden");
+    delete els.game.dataset.stage;
     document.body.classList.remove("playing");
     els.game.style.removeProperty("height");
     renderLobby();
@@ -908,6 +878,38 @@
     setTimeout(() => playTone(784, .16), 125);
   }
 
+  function startLoading() {
+    const assets = [
+      "assets/scenes/loading-night.webp",
+      "assets/scenes/chapter-01-map.webp",
+      "assets/scenes/ramen-truck-night.webp",
+      "assets/scenes/office-workers.webp",
+    ];
+    let progress = 0;
+    let assetsReady = false;
+    Promise.all(assets.map((src) => new Promise((resolve) => {
+      const image = new Image();
+      image.onload = image.onerror = resolve;
+      image.src = src;
+    }))).then(() => { assetsReady = true; });
+
+    const tick = () => {
+      const step = assetsReady ? 13 : Math.max(1, Math.round((92 - progress) * .12));
+      progress = Math.min(assetsReady ? 100 : 92, progress + step);
+      els.loadingBar.style.width = `${progress}%`;
+      els.loadingText.textContent = progress < 35 ? `點亮餐車中… ${progress}%`
+        : progress < 75 ? `熬煮今晚的湯頭… ${progress}%`
+          : progress < 100 ? `等待晚歸的客人… ${progress}%` : "準備完成";
+      if (progress < 100) return setTimeout(tick, 48);
+      setTimeout(() => {
+        els.loading.classList.add("leaving");
+        document.body.classList.remove("loading-active");
+        setTimeout(() => els.loading.classList.add("hidden"), 420);
+      }, 260);
+    };
+    tick();
+  }
+
   $("#homeButton").addEventListener("click", backToLobby);
   $("#leaveGameButton").addEventListener("click", backToLobby);
   $("#fullscreenButton").addEventListener("click", toggleFullscreen);
@@ -936,4 +938,5 @@
   document.addEventListener("fullscreenchange", fitGameCanvas);
 
   renderLobby();
+  startLoading();
 })();
