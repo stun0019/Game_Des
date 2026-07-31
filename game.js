@@ -203,14 +203,19 @@
     els.restaurantChapter.textContent = restaurant.chapter;
     els.restaurantName.textContent = restaurant.name;
     const completedCount = restaurant.levels.filter((level) => profile.completed[stageKey(restaurant.id, level.id)]).length;
+    const currentLevelId = restaurant.levels.find((level) => {
+      const key = stageKey(restaurant.id, level.id);
+      return isLevelUnlocked(restaurant.id, level.id) && !profile.completed[key];
+    })?.id || null;
     els.restaurantCompletion.textContent = `${completedCount} / ${restaurant.levels.length}`;
     els.levelGrid.innerHTML = restaurant.levels.map((level) => {
       const key = stageKey(restaurant.id, level.id);
       const unlocked = isLevelUnlocked(restaurant.id, level.id);
       const stars = profile.stars[key] || 0;
-      return `<button class="level-card chapter-node ${unlocked ? "" : "locked"} ${profile.completed[key] ? "cleared" : ""}" data-level="${level.id}" type="button" aria-label="1-${level.id} ${level.title}">
+      const isCurrent = level.id === currentLevelId;
+      return `<button class="level-card chapter-node ${unlocked ? "" : "locked"} ${profile.completed[key] ? "cleared" : ""} ${isCurrent ? "current" : ""}" data-level="${level.id}" type="button" aria-label="1-${level.id} ${level.title}" aria-disabled="${!unlocked}">
         <span class="node-glow"></span>
-        <span class="level-number">${unlocked ? `1-${level.id}` : "⌕"}</span>
+        <span class="level-number">${unlocked ? `1-${level.id}` : "🔒"}</span>
         <span class="level-stars">${[1,2,3].map((n) => n <= stars ? "★" : "☆").join("")}</span>
         <span class="level-tooltip"><small>${modeIcon(level.mode)} ${modeName(level.mode)}</small><strong>${level.title}</strong><i>${missionText(level)}</i></span>
       </button>`;
