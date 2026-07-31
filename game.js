@@ -833,10 +833,8 @@
     const availableWidth = viewport?.width || view.clientWidth || window.innerWidth;
     const availableHeight = viewport?.height || window.innerHeight;
     const scale = Math.min(availableWidth / GAME_WIDTH, availableHeight / GAME_HEIGHT);
-    const showRotateHint = availableWidth < 700 && window.innerHeight > window.innerWidth;
     canvas.style.setProperty("--game-scale", String(scale));
-    view.style.height = `${GAME_HEIGHT * scale + (showRotateHint ? 44 : 0)}px`;
-    $("#rotateHint").classList.toggle("show", showRotateHint);
+    view.style.height = `${GAME_HEIGHT * scale}px`;
   }
 
   function fitLobbyCanvas() {
@@ -1001,7 +999,6 @@
   });
   $("#leaveGameButton").addEventListener("click", backToLobby);
   $("#fullscreenButton").addEventListener("click", toggleFullscreen);
-  $("#rotateHint").addEventListener("click", toggleFullscreen);
   $("#upgradeButton").addEventListener("click", () => { upgradeRestaurant = selectedRestaurant; renderUpgradeModal(); openModal(els.upgradeModal); });
   $("#buddyButton").addEventListener("click", () => { renderBuddyModal(); openModal(els.buddyModal); });
   $("#achievementButton").addEventListener("click", () => { renderAchievements(); openModal(els.achievementModal); });
