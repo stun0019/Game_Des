@@ -8,14 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260731-mapui" />
+    <link rel="stylesheet" href="styles.css?v=20260731-drawn-icons" />
   </head>
   <body class="loading-active">
     <section id="loadingView" class="loading-view" aria-label="遊戲載入中">
       <div class="loading-shade"></div>
       <div class="loading-brand">
         <div class="loading-title-lockup">
-          <span class="loading-moon">☾</span>
+          <span class="loading-moon"><img src="assets/ui/moon-lantern-v2.png" alt="" /></span>
           <small>MOONLIGHT DINER</small>
           <h1>月光食堂物語</h1>
           <p>今晚，也為晚歸的人留一盞燈。</p>
@@ -31,13 +31,13 @@
     <div id="app" class="app">
       <header class="app-header">
         <button id="homeButton" class="brand-button" type="button" aria-label="回到餐車地圖">
-          <span class="logo-moon">☾</span>
+          <span class="logo-emblem"><img src="assets/ui/moon-lantern-v2.png" alt="" /></span>
           <span><small>MOONLIGHT DINER</small><strong>月光食堂物語</strong></span>
         </button>
         <nav class="resource-bar" aria-label="玩家資源">
-          <span class="resource"><i>●</i><b id="profileCoins">0</b><small>金幣</small></span>
-          <span class="resource gems"><i>◆</i><b id="profileGems">0</b><small>星石</small></span>
-          <button id="soundButton" class="round-button" type="button" aria-label="切換音效">♪</button>
+          <span class="resource coins"><i class="coin-emblem" aria-hidden="true"></i><b id="profileCoins">0</b><small>金幣</small></span>
+          <span class="resource gems"><i class="gem-emblem" aria-hidden="true"></i><b id="profileGems">0</b><small>星石</small></span>
+          <button id="soundButton" class="round-button" type="button" aria-label="切換音效"><span class="sound-emblem" aria-hidden="true"></span></button>
         </nav>
       </header>
 
@@ -63,16 +63,16 @@
             <div id="levelGrid" class="level-grid chapter-level-grid"></div>
 
             <div id="dailyBanner" class="daily-banner chapter-daily">
-              <span class="daily-icon">☀</span>
+              <span class="daily-icon" aria-hidden="true"><i></i></span>
               <div><small>今日主廚挑戰</small><strong>完成任意 2 關</strong></div>
               <div class="daily-progress"><b id="dailyProgress">0 / 2</b><i><span id="dailyBar"></span></i></div>
-              <button id="claimDailyButton" type="button" disabled>領取 120 ●</button>
+              <button id="claimDailyButton" type="button" disabled>領取 120 金幣</button>
             </div>
 
             <nav class="chapter-actions" aria-label="餐車功能">
-              <button id="upgradeButton" class="soft-button" type="button" aria-label="廚房升級" title="廚房升級"><span>♨</span><b>廚房升級</b></button>
-              <button id="buddyButton" class="soft-button" type="button" aria-label="夥伴管理" title="夥伴管理"><span>✦</span><b>夥伴管理</b></button>
-              <button id="achievementButton" class="soft-button" type="button" aria-label="成就日誌" title="成就日誌"><span>★</span><b>成就日誌</b></button>
+              <button id="upgradeButton" class="soft-button" type="button" aria-label="廚房升級" title="廚房升級"><span class="hud-icon icon-upgrade" aria-hidden="true"></span><b>廚房升級</b></button>
+              <button id="buddyButton" class="soft-button" type="button" aria-label="夥伴管理" title="夥伴管理"><span class="hud-icon icon-buddy" aria-hidden="true"></span><b>夥伴管理</b></button>
+              <button id="achievementButton" class="soft-button" type="button" aria-label="成就日誌" title="成就日誌"><span class="hud-icon icon-achievement" aria-hidden="true"></span><b>成就日誌</b></button>
             </nav>
           </div>
         </section>
@@ -81,8 +81,8 @@
           <div id="gameCanvas" class="game-canvas">
           <div class="design-layer">
           <div class="game-hud">
-            <button id="leaveGameButton" class="back-button" type="button">← 地圖</button>
-            <button id="fullscreenButton" class="back-button fullscreen-button" type="button">⛶ 全螢幕</button>
+            <button id="leaveGameButton" class="back-button icon-button icon-back" type="button"><i aria-hidden="true"></i><span>地圖</span></button>
+            <button id="fullscreenButton" class="back-button fullscreen-button icon-button icon-fullscreen" type="button"><i aria-hidden="true"></i><span>全螢幕</span></button>
             <div class="mission-summary">
               <small id="gameLevelLabel">關卡 1</small>
               <strong id="missionLabel">提供 8 道料理</strong>
@@ -99,8 +99,8 @@
           <section class="customer-zone">
             <div class="restaurant-awning" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
             <div class="riverside-view" aria-hidden="true"><i></i><i></i><i></i></div>
-            <div class="wall-lamp lamp-left" aria-hidden="true">✦</div>
-            <div class="wall-lamp lamp-right" aria-hidden="true">✦</div>
+            <div class="wall-lamp lamp-left" aria-hidden="true"></div>
+            <div class="wall-lamp lamp-right" aria-hidden="true"></div>
             <div class="zone-heading">
               <div><span class="eyebrow">ORDER QUEUE</span><h2>客人點單</h2></div>
               <div id="conditionBadges" class="condition-badges"></div>
@@ -113,15 +113,15 @@
             <div class="kitchen-backdrop" aria-hidden="true">
               <span class="hanging-pan pan-one"></span>
               <span class="hanging-pan pan-two"></span>
-              <span class="hanging-spoon">◯</span>
+              <span class="hanging-spoon" aria-hidden="true"></span>
               <span class="shelf shelf-one"><i></i><i></i><i></i></span>
               <span class="shelf shelf-two"><i></i><i></i></span>
-              <span class="window-scene"><b>☾</b><i></i></span>
+              <span class="window-scene"><b class="drawn-moon" aria-hidden="true"></b><i></i></span>
             </div>
             <div class="chef-character" aria-hidden="true">
-              <span class="chef-hat">♨</span>
+              <span class="chef-hat" aria-hidden="true"></span>
               <span class="chef-ears"></span>
-              <span class="chef-face">•ᴗ•</span>
+              <span class="chef-face" aria-hidden="true"></span>
               <span class="chef-body"></span>
             </div>
             <div class="counter-surface" aria-hidden="true"></div>
@@ -145,39 +145,39 @@
 
           <footer class="game-footer">
             <div class="combo-panel">
-              <span>COMBO</span><strong id="comboCount">×0</strong>
+              <span>COMBO</span><strong id="comboCount">x0</strong>
               <i><span id="comboTimer"></span></i>
             </div>
-            <div id="gameMessage" class="game-message"><span>✦</span><p>先選主食，再點空的設備開始料理。</p></div>
+            <div id="gameMessage" class="game-message"><span class="message-spark" aria-hidden="true"></span><p>先選主食，再點空的設備開始料理。</p></div>
             <button id="buddySkillButton" class="skill-button" type="button">
-              <span class="skill-avatar">☁</span>
+              <span class="skill-avatar" aria-hidden="true"></span>
               <span><small>夥伴技能</small><strong>星光鼓舞</strong></span>
               <i id="skillCooldown"></i>
             </button>
           </footer>
           </div>
           </div>
-          <button id="rotateHint" class="rotate-hint" type="button">↻ 請旋轉為橫向，或點此進入全螢幕</button>
+          <button id="rotateHint" class="rotate-hint icon-button icon-rotate" type="button"><i aria-hidden="true"></i><span>請旋轉為橫向，或點此進入全螢幕</span></button>
         </section>
       </main>
     </div>
 
     <div id="briefingModal" class="modal">
       <div class="modal-card briefing-card">
-        <button class="modal-close" data-close="briefingModal" type="button">×</button>
+        <button class="modal-close icon-close" data-close="briefingModal" type="button" aria-label="關閉"></button>
         <span id="briefingMode" class="mode-pill">提供模式</span>
         <h2 id="briefingTitle">月光拉麵舖 · 第 1 關</h2>
         <p id="briefingDescription">完成指定數量的料理。</p>
         <div id="briefingGoal" class="briefing-goal"></div>
         <div class="booster-title"><span>開張道具</span><small>使用道具讓本關更輕鬆</small></div>
         <div id="boosterGrid" class="booster-grid"></div>
-        <button id="startLevelButton" class="primary-button" type="button">開始營業 <span>→</span></button>
+        <button id="startLevelButton" class="primary-button command-forward" type="button">開始營業 <span aria-hidden="true"></span></button>
       </div>
     </div>
 
     <div id="upgradeModal" class="modal">
       <div class="modal-card wide-card">
-        <button class="modal-close" data-close="upgradeModal" type="button">×</button>
+        <button class="modal-close icon-close" data-close="upgradeModal" type="button" aria-label="關閉"></button>
         <span class="eyebrow">KITCHEN UPGRADE</span>
         <h2>廚房升級</h2>
         <p class="modal-subtitle">升級會永久保存，並套用於該餐廳的所有關卡。</p>
@@ -188,7 +188,7 @@
 
     <div id="buddyModal" class="modal">
       <div class="modal-card wide-card">
-        <button class="modal-close" data-close="buddyModal" type="button">×</button>
+        <button class="modal-close icon-close" data-close="buddyModal" type="button" aria-label="關閉"></button>
         <span class="eyebrow">BUDDY</span>
         <h2>夥伴管理</h2>
         <p class="modal-subtitle">裝備夥伴可獲得被動效果，關卡中還能使用主動技能。</p>
@@ -198,7 +198,7 @@
 
     <div id="achievementModal" class="modal">
       <div class="modal-card wide-card">
-        <button class="modal-close" data-close="achievementModal" type="button">×</button>
+        <button class="modal-close icon-close" data-close="achievementModal" type="button" aria-label="關閉"></button>
         <span class="eyebrow">CHEF LOG</span>
         <h2>成就日誌</h2>
         <p class="modal-subtitle">達成里程碑即可領取星石。</p>
@@ -209,7 +209,7 @@
     <div id="resultModal" class="modal">
       <div class="modal-card result-card">
         <span id="resultStatus" class="mode-pill">營業結束</span>
-        <div id="resultStars" class="result-stars">☆ ☆ ☆</div>
+        <div id="resultStars" class="result-stars" aria-label="零顆星"></div>
         <h2 id="resultTitle">關卡完成！</h2>
         <p id="resultDescription"></p>
         <div class="result-grid">
@@ -220,12 +220,12 @@
         </div>
         <div class="result-actions">
           <button id="resultMapButton" class="secondary-button" type="button">回到地圖</button>
-          <button id="retryButton" class="primary-button" type="button">再次挑戰 <span>↻</span></button>
+          <button id="retryButton" class="primary-button command-retry" type="button">再次挑戰 <span aria-hidden="true"></span></button>
         </div>
       </div>
     </div>
 
     <div id="toast" class="toast" aria-live="assertive"></div>
-    <script src="game.js?v=20260731-mapui"></script>
+    <script src="game.js?v=20260731-drawn-icons"></script>
   </body>
 </html>

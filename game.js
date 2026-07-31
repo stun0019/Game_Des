@@ -12,18 +12,18 @@
       chapter: "章節一 · CHAPTER 01",
       name: "照顧疲憊的上班族",
       subtitle: "日式深夜拉麵車",
-      icon: "☾",
+      icon: "brand",
       color: "#ef7657",
       description: "車站旁的辦公街區總有人晚歸。今晚，讓月光拉麵車成為他們回家前的一盞暖燈。",
       recipes: {
-        salt: { name: "月白鹽味", icon: "☾", time: 2600, color: "#62d3bd" },
-        miso: { name: "緋紅味噌", icon: "◆", time: 3300, color: "#ff7352" },
-        pork: { name: "星雲豚骨", icon: "✦", time: 4100, color: "#9c91ff" },
+        salt: { name: "月白鹽味", icon: "salt", time: 2600, color: "#62d3bd" },
+        miso: { name: "緋紅味噌", icon: "miso", time: 3300, color: "#ff7352" },
+        pork: { name: "星雲豚骨", icon: "pork", time: 4100, color: "#9c91ff" },
       },
       toppings: {
-        egg: { name: "月見蛋", icon: "●" },
-        nori: { name: "星海苔", icon: "▰" },
-        chili: { name: "火焰椒", icon: "♨" },
+        egg: { name: "月見蛋", icon: "egg" },
+        nori: { name: "星海苔", icon: "nori" },
+        chili: { name: "火焰椒", icon: "chili" },
       },
       levels: [
         { id: 1, mode: "serve", target: 6, time: 90, reward: 90, title: "開始營業的第一天", description: "車站旁第一次亮起餐車燈。先熟悉選麵、熬煮、盛盤與加料。", story: "剛下班的年輕職員停下腳步，他看起來已經很久沒有好好吃飯。", maxDishes: 1, atmosphere: "first-night" },
@@ -36,22 +36,22 @@
   };
 
   const BUDDIES = {
-    lumi: { name: "露米", icon: "☁", color: "#83c9d9", passive: "出餐分數 +5%", skill: "恢復所有客人 35% 耐心", cost: 0 },
-    moka: { name: "摩卡", icon: "♨", color: "#c98761", passive: "料理速度 +6%", skill: "8 秒內料理不會燒焦", cost: 4 },
-    piko: { name: "皮可", icon: "✦", color: "#a193f5", passive: "金幣收入 +8%", skill: "立即獲得 +3 Combo", cost: 6 },
+    lumi: { name: "露米", icon: "lumi", color: "#83c9d9", passive: "出餐分數 +5%", skill: "恢復所有客人 35% 耐心", cost: 0 },
+    moka: { name: "摩卡", icon: "moka", color: "#c98761", passive: "料理速度 +6%", skill: "8 秒內料理不會燒焦", cost: 4 },
+    piko: { name: "皮可", icon: "piko", color: "#a193f5", passive: "金幣收入 +8%", skill: "立即獲得 +3 Combo", cost: 6 },
   };
 
   const BOOSTERS = {
-    antiBurn: { name: "防焦塗層", icon: "◉", description: "整關料理不會燒焦" },
-    speed: { name: "高速爐火", icon: "»", description: "烹調速度提升 25%" },
-    score: { name: "分數紅利", icon: "★", description: "出餐分數提升 20%" },
+    antiBurn: { name: "防焦塗層", icon: "shield", description: "整關料理不會燒焦" },
+    speed: { name: "高速爐火", icon: "speed", description: "烹調速度提升 25%" },
+    score: { name: "分數紅利", icon: "score", description: "出餐分數提升 20%" },
   };
 
   const UPGRADE_META = {
-    cookers: { name: "烹調設備", icon: "♨", description: "增加可同時烹調的料理數", max: 3, costs: [0, 120, 280] },
-    plates: { name: "備餐盤", icon: "▱", description: "增加可預先準備的餐點數", max: 3, costs: [0, 100, 240] },
-    speed: { name: "備餐速度", icon: "»", description: "每級縮短 8% 烹調時間", max: 3, costs: [90, 180, 320] },
-    value: { name: "料理價值", icon: "★", description: "每級增加 12% 分數與金幣", max: 3, costs: [110, 220, 380] },
+    cookers: { name: "烹調設備", icon: "flame", description: "增加可同時烹調的料理數", max: 3, costs: [0, 120, 280] },
+    plates: { name: "備餐盤", icon: "plate", description: "增加可預先準備的餐點數", max: 3, costs: [0, 100, 240] },
+    speed: { name: "備餐速度", icon: "speed", description: "每級縮短 8% 烹調時間", max: 3, costs: [90, 180, 320] },
+    value: { name: "料理價值", icon: "score", description: "每級增加 12% 分數與金幣", max: 3, costs: [110, 220, 380] },
   };
 
   const ACHIEVEMENTS = {
@@ -62,11 +62,11 @@
   };
 
   const CUSTOMER_FACES = [
-    { face: "•ᴗ•", color: "#a193f5" },
-    { face: "ᵔᴥᵔ", color: "#c98761" },
-    { face: "•ﻌ•", color: "#6dbdca" },
-    { face: "•ө•", color: "#e7b94f" },
-    { face: "˶ᵔᵕᵔ˶", color: "#ed8297" },
+    { variant: "violet", color: "#a193f5" },
+    { variant: "cocoa", color: "#c98761" },
+    { variant: "aqua", color: "#6dbdca" },
+    { variant: "gold", color: "#e7b94f" },
+    { variant: "rose", color: "#ed8297" },
   ];
 
   const $ = (selector) => document.querySelector(selector);
@@ -171,7 +171,11 @@
   }
 
   function modeIcon(mode) {
-    return { serve: "▱", likes: "♥", score: "★", course: "≡", customer: "♟" }[mode];
+    return { serve: "serve", likes: "heart", score: "score", course: "course", customer: "customer" }[mode];
+  }
+
+  function iconMarkup(name, tag = "span") {
+    return `<${tag} class="drawn-icon icon-${name}" aria-hidden="true"></${tag}>`;
   }
 
   function missionText(level) {
@@ -186,7 +190,6 @@
     els.profileCoins.textContent = profile.coins;
     els.profileGems.textContent = profile.gems;
     els.soundButton.classList.toggle("muted", !profile.sound);
-    els.soundButton.textContent = profile.sound ? "♫" : "×";
     els.soundButton.setAttribute("aria-label", profile.sound ? "關閉音樂與音效" : "開啟音樂與音效");
   }
 
@@ -196,7 +199,7 @@
     renderResources();
     const restaurant = RESTAURANTS[selectedRestaurant];
     els.restaurantTabs.innerHTML = `<button class="restaurant-tab active" data-restaurant="ramen" type="button">
-      <span style="background:${restaurant.color}">${restaurant.icon}</span>
+      <span class="restaurant-emblem"><img src="assets/ui/moon-lantern-v2.png" alt=""></span>
       <div><small>本章餐車</small><strong>${restaurant.subtitle}</strong></div>
     </button>`;
     $$(".restaurant-tab").forEach((button) => button.addEventListener("click", () => {
@@ -221,9 +224,9 @@
       const isCurrent = level.id === currentLevelId;
       return `<button class="level-card chapter-node ${unlocked ? "" : "locked"} ${profile.completed[key] ? "cleared" : ""} ${isCurrent ? "current" : ""}" data-level="${level.id}" type="button" aria-label="1-${level.id} ${level.title}" aria-disabled="${!unlocked}">
         <span class="node-glow"></span>
-        <span class="level-number">${unlocked ? `1-${level.id}` : "🔒"}</span>
-        <span class="level-stars">${[1,2,3].map((n) => n <= stars ? "★" : "☆").join("")}</span>
-        <span class="level-tooltip"><small>${modeIcon(level.mode)} ${modeName(level.mode)}</small><strong>${level.title}</strong><i>${missionText(level)}</i></span>
+        <span class="level-number">${unlocked ? `1-${level.id}` : '<i class="level-lock" aria-hidden="true"></i>'}</span>
+        <span class="level-stars">${[1,2,3].map((n) => `<i class="${n <= stars ? "filled" : ""}"></i>`).join("")}</span>
+        <span class="level-tooltip"><small>${modeName(level.mode)}</small><strong>${level.title}</strong><i>${missionText(level)}</i></span>
       </button>`;
     }).join("");
     $$(".level-card").forEach((button) => button.addEventListener("click", () => {
@@ -239,7 +242,7 @@
     els.dailyProgress.textContent = `${plays} / 2`;
     els.dailyBar.style.width = `${plays / 2 * 100}%`;
     els.claimDaily.disabled = plays < 2 || profile.daily.claimed;
-    els.claimDaily.textContent = profile.daily.claimed ? "今日已領取" : "領取 120 ●";
+    els.claimDaily.textContent = profile.daily.claimed ? "今日已領取" : "領取 120 金幣";
   }
 
   function openBriefing() {
@@ -250,15 +253,15 @@
     els.briefingTitle.textContent = `1-${level.id} ${level.title}`;
     els.briefingDescription.textContent = `${level.story} ${level.description}`;
     const constraints = [
-      `<div><span>${modeIcon(level.mode)}</span><small>關卡目標</small><strong>${missionText(level)}</strong></div>`,
-      `<div><span>◷</span><small>限制時間</small><strong>${level.time} 秒</strong></div>`,
+      `<div>${iconMarkup(modeIcon(level.mode))}<small>關卡目標</small><strong>${missionText(level)}</strong></div>`,
+      `<div>${iconMarkup("time")}<small>限制時間</small><strong>${level.time} 秒</strong></div>`,
     ];
-    if (level.moves) constraints.push(`<div><span>↟</span><small>提供次數</small><strong>${level.moves} 次</strong></div>`);
-    if (level.customers) constraints.push(`<div><span>♟</span><small>客人人數</small><strong>${level.customers} 位</strong></div>`);
+    if (level.moves) constraints.push(`<div>${iconMarkup("moves")}<small>提供次數</small><strong>${level.moves} 次</strong></div>`);
+    if (level.customers) constraints.push(`<div>${iconMarkup("customer")}<small>客人人數</small><strong>${level.customers} 位</strong></div>`);
     els.briefingGoal.innerHTML = constraints.join("");
     els.boosterGrid.innerHTML = Object.entries(BOOSTERS).map(([id, item]) => `
       <button class="booster-card" data-booster="${id}" type="button" ${profile.inventory[id] ? "" : "disabled"}>
-        <span>${item.icon}</span><div><strong>${item.name}</strong><small>${item.description}</small></div><i>×${profile.inventory[id] || 0}</i>
+        ${iconMarkup(item.icon)}<div><strong>${item.name}</strong><small>${item.description}</small></div><i>x${profile.inventory[id] || 0}</i>
       </button>`).join("");
     $$(".booster-card").forEach((button) => button.addEventListener("click", () => {
       const id = button.dataset.booster;
@@ -271,7 +274,7 @@
 
   function renderUpgradeModal() {
     els.upgradeTabs.innerHTML = Object.values(RESTAURANTS).map((restaurant) =>
-      `<button class="${upgradeRestaurant === restaurant.id ? "active" : ""}" data-upgrade-restaurant="${restaurant.id}" type="button" ${isRestaurantUnlocked(restaurant.id) ? "" : "disabled"}>${restaurant.icon} ${restaurant.name}</button>`
+      `<button class="${upgradeRestaurant === restaurant.id ? "active" : ""}" data-upgrade-restaurant="${restaurant.id}" type="button" ${isRestaurantUnlocked(restaurant.id) ? "" : "disabled"}><img src="assets/ui/moon-lantern-v2.png" alt="">${restaurant.name}</button>`
     ).join("");
     $$("[data-upgrade-restaurant]").forEach((button) => button.addEventListener("click", () => {
       upgradeRestaurant = button.dataset.upgradeRestaurant;
@@ -283,9 +286,9 @@
       const full = level >= meta.max;
       const cost = full ? 0 : meta.costs[level];
       return `<div class="upgrade-row">
-        <span class="upgrade-icon">${meta.icon}</span><div class="upgrade-info"><strong>${meta.name}</strong><small>${meta.description}</small>
+        <span class="upgrade-icon">${iconMarkup(meta.icon)}</span><div class="upgrade-info"><strong>${meta.name}</strong><small>${meta.description}</small>
           <span>${[1,2,3].map((n) => `<i class="${n <= level ? "filled" : ""}"></i>`).join("")}</span></div>
-        <button data-upgrade="${id}" type="button" ${full || profile.coins < cost ? "disabled" : ""}>${full ? "最高等級" : `${cost} ●`}</button>
+        <button data-upgrade="${id}" type="button" ${full || profile.coins < cost ? "disabled" : ""}>${full ? "最高等級" : `${cost} 金幣`}</button>
       </div>`;
     }).join("");
     $$("[data-upgrade]").forEach((button) => button.addEventListener("click", () => buyUpgrade(button.dataset.upgrade)));
@@ -308,10 +311,10 @@
       const owned = profile.buddies[id].owned;
       const selected = profile.selectedBuddy === id;
       return `<article class="buddy-card ${selected ? "selected" : ""}">
-        <span class="buddy-avatar" style="background:${buddy.color}">${buddy.icon}</span>
+        <span class="buddy-avatar" style="background:${buddy.color}">${iconMarkup(buddy.icon)}</span>
         <div><small>${owned ? `LEVEL ${profile.buddies[id].level}` : "尚未解鎖"}</small><h3>${buddy.name}</h3>
           <p><b>被動：</b>${buddy.passive}</p><p><b>技能：</b>${buddy.skill}</p></div>
-        <button data-buddy="${id}" type="button" ${owned ? "" : profile.gems < buddy.cost ? "disabled" : ""}>${selected ? "使用中" : owned ? "裝備" : `${buddy.cost} ◆ 解鎖`}</button>
+        <button data-buddy="${id}" type="button" ${owned ? "" : profile.gems < buddy.cost ? "disabled" : ""}>${selected ? "使用中" : owned ? "裝備" : `${buddy.cost} 星石解鎖`}</button>
       </article>`;
     }).join("");
     $$("[data-buddy]").forEach((button) => button.addEventListener("click", () => {
@@ -335,9 +338,9 @@
       const claimed = profile.achievements[id];
       const ready = current >= achievement.target;
       return `<div class="achievement-row ${claimed ? "claimed" : ""}">
-        <span>★</span><div><strong>${achievement.name}</strong><small>${achievement.description}</small>
+        ${iconMarkup("achievement")}<div><strong>${achievement.name}</strong><small>${achievement.description}</small>
           <i><b style="width:${current / achievement.target * 100}%"></b></i><em>${current} / ${achievement.target}</em></div>
-        <button data-achievement="${id}" type="button" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : `+${achievement.reward} ◆`}</button>
+        <button data-achievement="${id}" type="button" ${!ready || claimed ? "disabled" : ""}>${claimed ? "已領取" : `領取 ${achievement.reward} 星石`}</button>
       </div>`;
     }).join("");
     $$("[data-achievement]").forEach((button) => button.addEventListener("click", () => {
@@ -415,9 +418,9 @@
     els.missionLabel.textContent = missionText(level);
     els.missionTarget.textContent = level.target;
     els.conditionBadges.innerHTML = [
-      `<span>◷ ${level.time} 秒</span>`,
-      level.moves ? `<span>↟ ${game.movesLeft} 次</span>` : "",
-      level.customers ? `<span>♟ ${level.customers} 位</span>` : "",
+      `<span>${iconMarkup("time", "i")}<b>${level.time} 秒</b></span>`,
+      level.moves ? `<span data-condition="moves">${iconMarkup("moves", "i")}<b>${game.movesLeft} 次</b></span>` : "",
+      level.customers ? `<span>${iconMarkup("customer", "i")}<b>${level.customers} 位</b></span>` : "",
       level.failBurn ? "<span class=\"danger\">燒焦即失敗</span>" : "",
       level.failLeave ? "<span class=\"danger\">客人離開即失敗</span>" : "",
       level.failDiscard ? "<span class=\"danger\">丟棄即失敗</span>" : "",
@@ -425,11 +428,11 @@
     els.waveBanner.classList.toggle("hidden", level.mode !== "course");
     els.recipePanel.innerHTML = Object.entries(restaurant.recipes).map(([id, recipe], index) => `
       <button class="recipe-button ${index === 0 ? "selected" : ""}" data-recipe="${id}" type="button">
-        <span style="background:${recipe.color}">${recipe.icon}</span><div><strong>${recipe.name}</strong><small>${(effectiveCookTime(recipe) / 1000).toFixed(1)} 秒</small></div><i></i>
+        <span style="background:${recipe.color}">${iconMarkup(recipe.icon, "i")}</span><div><strong>${recipe.name}</strong><small>${(effectiveCookTime(recipe) / 1000).toFixed(1)} 秒</small></div><i></i>
       </button>`).join("");
     $$("[data-recipe]").forEach((button) => button.addEventListener("click", () => selectRecipe(button.dataset.recipe)));
     els.cookers.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="cooker ${index >= upgrades.cookers ? "locked" : ""}" data-cooker="${index}" type="button" ${index >= upgrades.cookers ? "disabled" : ""}>
-      <small>設備 ${String.fromCharCode(65 + index)}</small><span class="cooker-pot"><i></i><b>⌁</b></span><strong>${index >= upgrades.cookers ? "尚未升級" : "點擊烹調"}</strong><em><i></i></em>
+      <small>設備 ${String.fromCharCode(65 + index)}</small><span class="cooker-pot"><i></i><b class="drawn-icon icon-bolt" aria-hidden="true"></b></span><strong>${index >= upgrades.cookers ? "尚未升級" : "點擊烹調"}</strong><em><i></i></em>
     </button>`).join("");
     $$("[data-cooker]").forEach((button) => button.addEventListener("click", () => handleCooker(Number(button.dataset.cooker))));
     els.plates.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="plate ${index >= upgrades.plates ? "locked" : "empty"} ${index === 0 ? "active" : ""}" data-plate="${index}" type="button" ${index >= upgrades.plates ? "disabled" : ""}>
@@ -440,10 +443,10 @@
       button.addEventListener("dblclick", () => discardPlate(Number(button.dataset.plate)));
     });
     els.toppingPanel.innerHTML = Object.entries(restaurant.toppings).map(([id, topping]) => `
-      <button data-topping="${id}" type="button"><span>${topping.icon}</span><strong>${topping.name}</strong></button>`).join("");
+      <button data-topping="${id}" type="button"><span>${iconMarkup(topping.icon, "i")}</span><strong>${topping.name}</strong></button>`).join("");
     $$("[data-topping]").forEach((button) => button.addEventListener("click", () => addTopping(button.dataset.topping)));
     const buddy = BUDDIES[game.buddy];
-    els.skillButton.querySelector(".skill-avatar").textContent = buddy.icon;
+    els.skillButton.querySelector(".skill-avatar").className = `skill-avatar drawn-icon icon-${buddy.icon}`;
     els.skillButton.querySelector(".skill-avatar").style.background = buddy.color;
     els.skillButton.querySelector("strong").textContent = game.buddy === "lumi" ? "星光鼓舞" : game.buddy === "moka" ? "防焦結界" : "連擊靈感";
   }
@@ -682,11 +685,13 @@
         const recipe = game.restaurant.recipes[plate.base];
         element.dataset.base = plate.base;
         element.style.setProperty("--dish-color", recipe.color);
-        symbol.textContent = recipe.icon;
-        topping.textContent = plate.topping ? game.restaurant.toppings[plate.topping].icon : "?";
+        symbol.className = `drawn-icon icon-${recipe.icon}`;
+        topping.className = plate.topping ? `drawn-icon icon-${game.restaurant.toppings[plate.topping].icon}` : "";
+        symbol.textContent = "";
+        topping.textContent = "";
         label.textContent = plate.topping ? `${recipe.name}完成` : "等待配料";
       } else {
-        symbol.textContent = ""; topping.textContent = ""; label.textContent = "空餐盤";
+        symbol.className = ""; topping.className = ""; symbol.textContent = ""; topping.textContent = ""; label.textContent = "空餐盤";
       }
     });
   }
@@ -696,14 +701,14 @@
     els.orders.innerHTML = game.orders.map((customer, index) => {
       const patienceRatio = clamp(customer.patience / customer.maxPatience, 0, 1);
       return `<button class="order-card ${patienceRatio < .28 ? "impatient" : ""}" data-order="${customer.id}" type="button">
-        <span class="customer-face" style="background:${customer.face.color}">${customer.face.face}</span>
+        <span class="customer-face customer-${customer.face.variant}" style="background:${customer.face.color}"></span>
         <span class="order-content"><small>GUEST ${String(game.customersCompleted + index + 1).padStart(2, "0")}</small>
           <span class="dish-list">${customer.dishes.map((dish) => {
             const recipe = game.restaurant.recipes[dish.base], topping = game.restaurant.toppings[dish.topping];
-            return `<span class="dish-ticket ${dish.served ? "served" : ""}" style="--dish:${recipe.color}"><i>${dish.served ? "✓" : recipe.icon}</i><b>${recipe.name}</b><em>${topping.icon}</em></span>`;
+            return `<span class="dish-ticket ${dish.served ? "served" : ""}" style="--dish:${recipe.color}">${iconMarkup(dish.served ? "check" : recipe.icon, "i")}<b>${recipe.name}</b>${iconMarkup(topping.icon, "em")}</span>`;
           }).join("")}</span>
         </span>
-        <span class="like-line">♥ 讚</span><span class="patience"><i style="width:${patienceRatio * 100}%"></i></span>
+        <span class="like-line">${iconMarkup("heart", "i")}<b>讚</b></span><span class="patience"><i style="width:${patienceRatio * 100}%"></i></span>
       </button>`;
     }).join("") || `<div class="orders-empty">下一批客人即將抵達…</div>`;
     $$("[data-order]").forEach((button) => button.addEventListener("click", () => serveCustomer(button.dataset.order)));
@@ -721,9 +726,8 @@
       els.waveBanner.classList.remove("hidden");
       els.waveBanner.innerHTML = `WAVE <b>${game.wave}</b> / ${game.level.waves.length}`;
     }
-    els.conditionBadges.querySelectorAll("span").forEach((badge) => {
-      if (badge.textContent.includes("次") && game.movesLeft !== null) badge.textContent = `↟ ${game.movesLeft} 次`;
-    });
+    const movesBadge = els.conditionBadges.querySelector('[data-condition="moves"] b');
+    if (movesBadge && game.movesLeft !== null) movesBadge.textContent = `${game.movesLeft} 次`;
     game.orders.forEach((customer) => {
       const card = els.orders.querySelector(`[data-order="${customer.id}"]`);
       if (!card) return;
@@ -758,7 +762,7 @@
   }
 
   function updateComboUI() {
-    els.comboCount.textContent = `×${game?.combo || 0}`;
+    els.comboCount.textContent = `x${game?.combo || 0}`;
     els.comboCount.parentElement.classList.toggle("hot", (game?.combo || 0) >= 3);
   }
 
@@ -794,7 +798,8 @@
     }
     els.resultStatus.textContent = success ? "目標達成" : "挑戰失敗";
     els.resultStatus.classList.toggle("failure", !success);
-    els.resultStars.textContent = [1,2,3].map((n) => n <= stars ? "★" : "☆").join(" ");
+    els.resultStars.innerHTML = [1,2,3].map((n) => `<i class="${n <= stars ? "filled" : ""}"></i>`).join("");
+    els.resultStars.setAttribute("aria-label", `${stars} 顆星`);
     els.resultTitle.textContent = success ? "今晚營業成功！" : "再調整一下節奏！";
     els.resultDescription.textContent = reason;
     els.resultScore.textContent = game.score;
