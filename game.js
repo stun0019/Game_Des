@@ -62,11 +62,9 @@
   };
 
   const CUSTOMER_FACES = [
-    { variant: "violet", color: "#a193f5" },
-    { variant: "cocoa", color: "#c98761" },
-    { variant: "aqua", color: "#6dbdca" },
-    { variant: "gold", color: "#e7b94f" },
-    { variant: "rose", color: "#ed8297" },
+    { variant: "jun" },
+    { variant: "mei" },
+    { variant: "chen" },
   ];
 
   const $ = (selector) => document.querySelector(selector);
@@ -394,8 +392,9 @@
     const dishCount = forceDishes || (game.level.maxDishes > 1 && Math.random() > .52 ? game.level.maxDishes : 1);
     const patience = 34 + Math.random() * 13;
     game.customersUsed += 1;
+    const face = CUSTOMER_FACES[(game.customersUsed - 1) % CUSTOMER_FACES.length];
     return {
-      id: `${Date.now()}-${Math.random()}`, face: randomItem(CUSTOMER_FACES), patience, maxPatience: patience,
+      id: `${Date.now()}-${Math.random()}`, face, patience, maxPatience: patience,
       dishes: Array.from({ length: dishCount }, () => ({ base: randomItem(recipeKeys), topping: randomItem(toppingKeys), served: false })),
     };
   }
@@ -700,8 +699,7 @@
     if (!game) return;
     els.orders.innerHTML = game.orders.map((customer, index) => {
       const patienceRatio = clamp(customer.patience / customer.maxPatience, 0, 1);
-      return `<button class="order-card ${patienceRatio < .28 ? "impatient" : ""}" data-order="${customer.id}" type="button">
-        <span class="customer-face customer-${customer.face.variant}" style="background:${customer.face.color}"></span>
+      return `<button class="order-card ${patienceRatio < .28 ? "impatient" : ""}" data-order="${customer.id}" data-customer-variant="${customer.face.variant}" style="--order-slot:${index};--order-x:${123 + index * 260}px" type="button">
         <span class="order-content"><small>GUEST ${String(game.customersCompleted + index + 1).padStart(2, "0")}</small>
           <span class="dish-list">${customer.dishes.map((dish) => {
             const recipe = game.restaurant.recipes[dish.base], topping = game.restaurant.toppings[dish.topping];
@@ -963,6 +961,7 @@
       "assets/scenes/chapter-01-map.webp",
       "assets/scenes/ramen-truck-night.webp",
       "assets/scenes/office-workers.webp",
+      "assets/sprites/customer-sprites.webp",
     ];
     let progress = 0;
     let assetsReady = false;

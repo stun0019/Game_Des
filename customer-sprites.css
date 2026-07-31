@@ -1,0 +1,252 @@
+/* Full-body customer sprite layer for the fixed 852x479 design canvas. */
+.design-layer .customer-zone {
+  padding: 0;
+}
+
+.design-layer .zone-heading {
+  position: absolute;
+  z-index: 16;
+  top: 6px;
+  right: 20px;
+  left: 20px;
+  margin: 0;
+  pointer-events: none;
+}
+
+.design-layer .customer-walkway {
+  position: absolute;
+  z-index: 8;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.design-layer .customer-walkway::before {
+  position: absolute;
+  right: 18px;
+  bottom: 5px;
+  left: 18px;
+  height: 18px;
+  content: "";
+  opacity: .48;
+  border-top: 2px solid rgba(255, 216, 151, .48);
+  background: linear-gradient(180deg, rgba(67, 38, 27, .16), rgba(26, 15, 17, .46));
+  transform: perspective(80px) rotateX(48deg);
+  transform-origin: bottom;
+}
+
+.design-layer .customer-walkway::after {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 37px;
+  content: "";
+  border-top: 3px solid #d28a52;
+  background:
+    linear-gradient(180deg, rgba(255, 214, 151, .22), transparent 26%),
+    repeating-linear-gradient(90deg, transparent 0 105px, rgba(42, 18, 13, .2) 106px 109px),
+    linear-gradient(180deg, #8c4a2e, #4b261e 72%, #2b1718);
+  box-shadow:
+    inset 0 3px rgba(255, 224, 177, .18),
+    inset 0 -5px rgba(24, 10, 12, .42),
+    0 -3px 8px rgba(20, 8, 10, .3);
+}
+
+.design-layer .customer-actor {
+  position: absolute;
+  z-index: 1;
+  bottom: 4px;
+  left: 0;
+  display: block;
+  width: 78px;
+  height: 117px;
+  pointer-events: none;
+  transform: translate3d(var(--actor-x), 0, 0);
+  transition: transform var(--travel-duration, 900ms) cubic-bezier(.3, .72, .28, 1);
+  will-change: transform;
+}
+
+.design-layer .customer-actor::after {
+  position: absolute;
+  right: 15px;
+  bottom: 1px;
+  left: 15px;
+  height: 7px;
+  content: "";
+  opacity: .52;
+  border-radius: 50%;
+  background: rgba(5, 8, 13, .72);
+  filter: blur(2px);
+}
+
+.design-layer .customer-sprite-frame {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("assets/sprites/customer-sprites.webp");
+  background-repeat: no-repeat;
+  background-position: 0 var(--sprite-y);
+  background-size: 800% 300%;
+  filter: drop-shadow(0 2px 2px rgba(5, 8, 16, .38));
+  transform-origin: 50% 75%;
+}
+
+.design-layer .customer-actor[data-direction="left"] .customer-sprite-frame {
+  transform: scaleX(-1);
+}
+
+.design-layer .customer-actor[data-state="walk"] .customer-sprite-frame {
+  animation: customer-sprite-walk .58s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor[data-state="idle"] .customer-sprite-frame {
+  animation: customer-sprite-idle 1.4s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor[data-state="counter"] .customer-sprite-frame {
+  animation: customer-sprite-counter 1.05s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.is-impatient .customer-sprite-frame {
+  animation-duration: .42s;
+  filter: drop-shadow(0 2px 2px rgba(5, 8, 16, .38)) saturate(1.12);
+}
+
+.design-layer .orders {
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  display: block;
+  height: 145px;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+.design-layer .order-card {
+  position: absolute;
+  top: 61px;
+  left: var(--order-x);
+  display: block;
+  width: 145px;
+  min-height: 70px;
+  padding: 0 0 10px;
+  color: var(--ink);
+  pointer-events: auto;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.design-layer .order-card:hover {
+  transform: translateY(-2px);
+}
+
+.design-layer .order-content {
+  display: block;
+  min-height: 53px;
+  padding: 5px 6px 7px;
+  border: 2px solid rgba(255, 255, 255, .94);
+  border-radius: 7px;
+}
+
+.design-layer .order-content::after {
+  position: absolute;
+  top: 23px;
+  left: -5px;
+  width: 9px;
+  height: 9px;
+  content: "";
+  border: 2px solid white;
+  border-top: 0;
+  border-right: 0;
+  background: #fff7e8;
+  transform: rotate(45deg);
+}
+
+.design-layer .order-content > small {
+  margin-bottom: 3px;
+  padding: 1px 4px;
+  font-size: 6px;
+}
+
+.design-layer .dish-list {
+  gap: 3px;
+}
+
+.design-layer .dish-ticket {
+  grid-template-columns: 21px minmax(0, 1fr) 16px;
+  gap: 3px;
+  min-height: 20px;
+  padding: 2px 3px;
+}
+
+.design-layer .dish-ticket i {
+  width: 20px;
+  height: 18px;
+}
+
+.design-layer .dish-ticket b {
+  font-size: 7px;
+}
+
+.design-layer .dish-ticket em {
+  font-size: 9px;
+}
+
+.design-layer .patience {
+  right: 25px;
+  bottom: 2px;
+  left: 6px;
+  height: 5px;
+}
+
+.design-layer .like-line {
+  right: 5px;
+  bottom: 0;
+}
+
+.design-layer .customer-face {
+  display: none !important;
+}
+
+.design-layer .orders-empty {
+  position: absolute;
+  top: 66px;
+  right: 270px;
+  left: 270px;
+  padding: 13px;
+  border-radius: 7px;
+  background: rgba(7, 16, 28, .7);
+}
+
+@keyframes customer-sprite-idle {
+  0%, 49% { background-position-x: 0; }
+  50%, 100% { background-position-x: 14.2857%; }
+}
+
+@keyframes customer-sprite-walk {
+  0%, 24% { background-position-x: 28.5714%; }
+  25%, 49% { background-position-x: 42.8571%; }
+  50%, 74% { background-position-x: 57.1429%; }
+  75%, 100% { background-position-x: 71.4286%; }
+}
+
+@keyframes customer-sprite-counter {
+  0%, 49% { background-position-x: 85.7143%; }
+  50%, 100% { background-position-x: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .design-layer .customer-actor {
+    transition-duration: 1ms !important;
+  }
+
+  .design-layer .customer-sprite-frame {
+    animation-duration: 2.4s !important;
+  }
+}
