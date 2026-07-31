@@ -1,0 +1,272 @@
+/* Moonlight Diner loading gate and synthesized-audio controls. */
+.mla-loading-actions {
+  display: grid;
+  grid-template-rows: 0fr;
+  justify-items: center;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: grid-template-rows 260ms ease, opacity 220ms ease, transform 260ms ease;
+  text-rendering: geometricPrecision;
+}
+
+.mla-loading-actions > div {
+  min-height: 0;
+}
+
+.loading-view.mla-ready .mla-loading-actions {
+  grid-template-rows: 1fr;
+  margin-top: 15px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.loading-view.mla-ready .loading-track i {
+  box-shadow: 0 0 18px rgba(255, 193, 66, .9), 0 0 30px rgba(255, 132, 46, .42);
+}
+
+.loading-view.mla-ready .loading-status strong {
+  color: #fff0a4;
+}
+
+.mla-ready-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 2px 0 5px;
+}
+
+.mla-ready-copy {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: #fff7de;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .65);
+}
+
+.mla-ready-mark {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border: 2px solid #ffe38a;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f4ba3c, #d77525);
+  box-shadow: inset 0 2px rgba(255, 255, 255, .4), 0 0 12px rgba(255, 187, 59, .45);
+}
+
+.mla-ready-mark::before {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 7px;
+  height: 11px;
+  border-right: 3px solid #fff9d7;
+  border-bottom: 3px solid #fff9d7;
+  content: "";
+  transform: rotate(42deg);
+}
+
+.mla-start-button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px 1fr 28px;
+  align-items: center;
+  width: 304px;
+  min-height: 74px;
+  padding: 8px 16px 10px 11px;
+  overflow: hidden;
+  border: 2px solid #ffe7a1;
+  border-radius: 8px;
+  outline: 0;
+  color: #fffaf0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, .22), transparent 34%),
+    linear-gradient(180deg, #f4a92f 0%, #e17b22 66%, #bd541b 100%);
+  box-shadow:
+    inset 0 -5px rgba(126, 48, 15, .28),
+    inset 0 2px rgba(255, 255, 255, .34),
+    0 5px 0 #743919,
+    0 10px 22px rgba(0, 0, 0, .45),
+    0 0 22px rgba(255, 170, 45, .22);
+  font: inherit;
+  text-align: left;
+  text-shadow: 0 2px 2px rgba(92, 36, 13, .58);
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: filter 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.mla-start-button::before {
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255, 245, 202, .28);
+  border-radius: 5px;
+  content: "";
+  pointer-events: none;
+}
+
+.mla-start-button:hover,
+.mla-start-button:focus-visible {
+  filter: brightness(1.08) saturate(1.05);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 -5px rgba(126, 48, 15, .25),
+    inset 0 2px rgba(255, 255, 255, .4),
+    0 7px 0 #743919,
+    0 14px 27px rgba(0, 0, 0, .46),
+    0 0 28px rgba(255, 184, 56, .4);
+}
+
+.mla-start-button:active {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 -3px rgba(126, 48, 15, .24),
+    inset 0 2px rgba(255, 255, 255, .28),
+    0 1px 0 #743919,
+    0 5px 11px rgba(0, 0, 0, .4);
+}
+
+.mla-start-button:disabled {
+  filter: grayscale(.35) brightness(.75);
+  cursor: wait;
+}
+
+.mla-start-emblem {
+  position: relative;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 2px solid rgba(255, 244, 197, .8);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 30%, #30446b, #172443 72%);
+  box-shadow: inset 0 -3px rgba(2, 9, 25, .38), 0 2px 5px rgba(76, 31, 11, .38);
+}
+
+.mla-start-emblem::before {
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 13px solid #ffe47d;
+  content: "";
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .3));
+}
+
+.mla-start-label {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
+  line-height: 1.08;
+}
+
+.mla-start-label strong {
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.mla-start-label small {
+  margin-top: 4px;
+  color: #fff1c4;
+  font-family: Fredoka, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.mla-start-arrow {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  justify-self: end;
+  border-top: 4px solid #fff5cf;
+  border-right: 4px solid #fff5cf;
+  transform: rotate(45deg);
+  filter: drop-shadow(0 2px 1px rgba(0, 0, 0, .32));
+}
+
+.mla-start-arrow::after {
+  position: absolute;
+  top: 5px;
+  right: -3px;
+  width: 21px;
+  height: 4px;
+  border-radius: 2px;
+  background: #fff5cf;
+  content: "";
+  transform: rotate(-45deg);
+  transform-origin: right center;
+}
+
+.loading-view.mla-exiting .mla-start-button {
+  pointer-events: none;
+}
+
+.loading-view.mla-exiting .mla-loading-actions {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* The existing sound button keeps its dimensions; this draws every state in CSS. */
+#soundButton .sound-emblem {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+#soundButton .sound-emblem::before {
+  position: absolute;
+  top: 8px;
+  left: 1px;
+  width: 7px;
+  height: 9px;
+  border-radius: 2px 0 0 2px;
+  background: #fff0bd;
+  box-shadow: 5px 0 0 #fff0bd;
+  content: "";
+}
+
+#soundButton .sound-emblem::after {
+  position: absolute;
+  top: 4px;
+  right: 1px;
+  width: 11px;
+  height: 16px;
+  border: 3px solid #fff0bd;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
+  content: "";
+}
+
+#soundButton.muted .sound-emblem::after,
+#soundButton.mla-muted .sound-emblem::after {
+  top: 3px;
+  right: 2px;
+  width: 3px;
+  height: 19px;
+  border: 0;
+  border-radius: 2px;
+  background: #ff8b79;
+  box-shadow: 0 0 0 2px rgba(48, 24, 31, .65);
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mla-loading-actions,
+  .mla-start-button {
+    transition: none;
+  }
+}

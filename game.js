@@ -892,6 +892,11 @@
   }
 
   function playTone(frequency, duration, type = "sine", volume = .04) {
+    const audio = window.MoonlightLoadingAudio?.audio;
+    if (audio) {
+      audio.voice(frequency, duration, { type, volume });
+      return;
+    }
     if (!profile.sound) return;
     try {
       ensureAudio();
@@ -916,6 +921,10 @@
   }
 
   function startMusic() {
+    if (window.MoonlightLoadingAudio) {
+      void window.MoonlightLoadingAudio.startMusic(musicMode);
+      return;
+    }
     if (!profile.sound || musicTimer) return;
     try { ensureAudio(); } catch { return; }
     musicTick();
@@ -923,11 +932,18 @@
   }
 
   function stopMusic() {
+    window.MoonlightLoadingAudio?.stopMusic();
     clearInterval(musicTimer);
     musicTimer = null;
   }
 
   function setMusicMode(mode) {
+    if (window.MoonlightLoadingAudio) {
+      musicMode = mode;
+      musicStep = 0;
+      window.MoonlightLoadingAudio.setMusicMode(mode);
+      return;
+    }
     if (musicMode === mode && musicTimer) return;
     musicMode = mode;
     musicStep = 0;
@@ -967,6 +983,10 @@
         : progress < 75 ? "熬煮今晚的湯頭…"
           : progress < 100 ? "等待晚歸的客人…" : "準備完成";
       if (progress < 100) return setTimeout(tick, 48);
+      if (window.MoonlightLoadingAudio) {
+        window.MoonlightLoadingAudio.complete("準備完成，請開始遊戲");
+        return;
+      }
       setTimeout(() => {
         els.loading.classList.add("leaving");
         document.body.classList.remove("loading-active");
@@ -976,7 +996,9 @@
     tick();
   }
 
-  $("#homeButton").addEventListener("click", backToLobby);
+  $("#homeButton").addEventListener("click", () => {
+    if (!window.MoonlightChapterFlow?.showChapterSelect()) backToLobby();
+  });
   $("#leaveGameButton").addEventListener("click", backToLobby);
   $("#fullscreenButton").addEventListener("click", toggleFullscreen);
   $("#rotateHint").addEventListener("click", toggleFullscreen);
@@ -1004,6 +1026,11 @@
   window.addEventListener("resize", () => { fitLobbyCanvas(); fitGameCanvas(); });
   window.visualViewport?.addEventListener("resize", () => { fitLobbyCanvas(); fitGameCanvas(); });
   document.addEventListener("fullscreenchange", fitGameCanvas);
+  document.addEventListener("moonlight:levelselect", (event) => {
+    if (!event.detail?.generated) return;
+    const chapter = event.detail.chapter?.id || "";
+    showToast(`第 ${chapter} 章內容尚在準備中`);
+  });
   document.addEventListener("pointerdown", (event) => {
     if (!event.target.closest("button")) return;
     startMusic();
