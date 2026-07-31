@@ -1978,7 +1978,9 @@ body:not(.playing) .chapter-view,
   top: 50%;
   left: calc(100% + clamp(5px,.7vw,10px));
   display: block;
-  width: clamp(90px,11vw,155px);
+  width: max-content;
+  min-width: clamp(82px,8vw,112px);
+  max-width: clamp(130px,14vw,180px);
   padding: clamp(5px,.65vw,9px);
   color: white;
   text-align: left;
@@ -2449,7 +2451,9 @@ body:not(.playing) .app-header {
     right: auto;
     bottom: calc(100% + 13px);
     left: 50%;
-    width: 132px;
+    width: max-content;
+    min-width: 108px;
+    max-width: 140px;
     padding: 7px 9px;
     text-align: center;
     transform: translateX(-50%) translateY(4px) scale(.96);
@@ -2482,6 +2486,7 @@ body:not(.playing) .app-header {
     margin: 2px 0 0;
     font-size: 12px;
     line-height: 1.25;
+    white-space: nowrap;
   }
   .level-tooltip i { display: none; }
 
