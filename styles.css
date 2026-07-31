@@ -3759,3 +3759,284 @@ body:not(.playing) .round-button {
 .result-stars { display: flex; justify-content: center; gap: 9px; }
 .result-stars i { display: block; width: 32px; height: 32px; background: #d3ccbd; clip-path: polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 94%,50% 72%,21% 94%,32% 57%,2% 35%,39% 35%); }
 .result-stars i.filled { background: linear-gradient(#fff0a0,#e6a83d); filter: drop-shadow(0 3px 2px rgba(0,0,0,.25)); }
+
+/* v0.6 gameplay clarity pass — original time-management layout. */
+.design-layer .game-hud {
+  height: 52px;
+  min-height: 52px;
+  grid-template-columns: 40px 44px minmax(210px,1fr) 108px 72px 88px 68px;
+  gap: 5px;
+  padding: 5px 8px;
+}
+.design-layer .back-button {
+  min-width: 0;
+  min-height: 38px;
+  padding: 4px;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 6px;
+  border-radius: 8px;
+}
+.design-layer .back-button > i { width: 13px; height: 13px; }
+.design-layer .mission-summary { min-width: 0; padding-left: 5px; }
+.design-layer .mission-summary small { color: #ffd98a; font-size: 6px; letter-spacing: .04em; }
+.design-layer .mission-summary strong {
+  overflow: hidden;
+  margin-top: 1px;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.design-layer .mission-progress { grid-template-columns: auto auto auto; gap: 2px; padding: 3px 7px; border-radius: 8px; background: rgba(50,20,22,.3); }
+.design-layer .mission-progress > span { font-size: 17px; line-height: 1; }
+.design-layer .mission-progress > small,
+.design-layer .mission-progress > b { font-size: 8px; }
+.design-layer .mission-progress > i { height: 5px; margin-top: 2px; }
+.design-layer .hud-stat {
+  min-width: 0;
+  min-height: 39px;
+  padding: 4px 5px;
+  border-radius: 8px;
+}
+.design-layer .hud-stat small { font-size: 6px; }
+.design-layer .hud-stat strong { font-size: 15px; line-height: 1.05; }
+.design-layer .time-stat {
+  border-color: rgba(255,223,124,.62);
+  background: linear-gradient(180deg,rgba(122,48,34,.78),rgba(67,29,31,.8));
+}
+.design-layer .time-stat strong { color: #ffe27e; font-size: 18px; }
+.design-layer .time-stat strong.danger { color: #ffaaa0; animation: none; }
+.design-layer .score-stat strong { color: #fff; }
+.design-layer .coin-stat strong { color: #ffd47a; }
+
+.design-layer .customer-zone {
+  height: 140px;
+  min-height: 140px;
+}
+.design-layer .kitchen-zone {
+  height: 237px;
+  min-height: 237px;
+}
+.design-layer .recipe-column,
+.design-layer .cooker-column,
+.design-layer .plate-column,
+.design-layer .topping-column {
+  top: auto;
+  right: auto;
+  bottom: 10px;
+}
+.design-layer .recipe-column { left: 8px; width: 190px; }
+.design-layer .cooker-column { left: 206px; width: 218px; }
+.design-layer .plate-column { left: 432px; width: 228px; }
+.design-layer .topping-column { left: 668px; width: 176px; }
+.design-layer .recipe-panel,
+.design-layer .cookers,
+.design-layer .plates,
+.design-layer .topping-panel {
+  min-height: 100px;
+  box-sizing: border-box;
+  gap: 5px;
+  padding: 7px;
+  border-width: 3px;
+  border-radius: 13px;
+}
+.design-layer .recipe-panel,
+.design-layer .cookers,
+.design-layer .plates,
+.design-layer .topping-panel { grid-template-columns: repeat(3,minmax(0,1fr)); }
+.design-layer .zone-title { top: -15px; left: 5px; }
+.design-layer .zone-title > span { width: 20px; height: 20px; font-size: 7px; }
+.design-layer .zone-title h3 { padding: 3px 7px; font-size: 7px; }
+.design-layer .recipe-button,
+.design-layer .cooker,
+.design-layer .plate,
+.design-layer .topping-panel button {
+  min-width: 0;
+  min-height: 82px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.design-layer .recipe-button {
+  gap: 3px;
+  padding: 4px 2px;
+  border-width: 3px;
+  border-radius: 10px;
+}
+.design-layer .recipe-button > span { width: 38px; height: 34px; border-width: 3px; }
+.design-layer .recipe-button > span .drawn-icon { width: 24px; height: 24px; }
+.design-layer .recipe-button strong { font-size: 7px; }
+.design-layer .recipe-button small { font-size: 5px; }
+.design-layer .recipe-button.selected::after {
+  position: absolute;
+  top: -5px;
+  right: -4px;
+  display: grid;
+  width: 15px;
+  height: 15px;
+  content: "✓";
+  place-items: center;
+  color: #fff;
+  font-size: 9px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #ef5976;
+}
+.design-layer .cooker {
+  min-height: 82px;
+  border-width: 4px;
+  border-radius: 14px;
+}
+.design-layer .cooker-pot { transform: scale(.62); }
+.design-layer .cooker > strong {
+  top: auto;
+  right: 4px;
+  bottom: 6px;
+  left: 4px;
+  overflow: hidden;
+  padding: 3px 2px;
+  font-size: 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.design-layer .cooker > small { top: 4px; bottom: auto; left: 6px; font-size: 5px; }
+.design-layer .cooker > em { right: 8px; bottom: 2px; left: 8px; height: 4px; }
+.design-layer .cooker.cooking { box-shadow: inset 0 -4px rgba(0,0,0,.24),0 0 0 2px #65cfe1; }
+.design-layer .cooker.ready { filter: brightness(1.08); }
+.design-layer .cooker.burnt {
+  filter: none;
+  border-color: #ff755f;
+  background: linear-gradient(145deg,#4b2824,#1e1718);
+  box-shadow: inset 0 -4px rgba(0,0,0,.35),0 0 0 3px rgba(255,91,70,.55);
+  animation: burntJolt .32s ease-in-out 2;
+}
+.design-layer .cooker.burnt::before {
+  position: absolute;
+  z-index: 4;
+  top: 5px;
+  right: 5px;
+  padding: 2px 4px;
+  content: "焦!";
+  color: #fff;
+  font-size: 7px;
+  border-radius: 5px;
+  background: #db3f43;
+}
+.design-layer .plate {
+  min-height: 82px;
+  border-width: 3px;
+  border-radius: 16px;
+  touch-action: manipulation;
+}
+.design-layer .plate.active { transform: translateY(-3px); }
+.design-layer .plate > small { top: 5px; font-size: 5px; }
+.design-layer .plate > strong { bottom: 7px; font-size: 5px; }
+.design-layer .plate > em { bottom: -8px; padding: 2px 4px; font-size: 5px; }
+.design-layer .plate-bowl { width: 46px; height: 31px; }
+.design-layer .plate.holding-discard { filter: saturate(.5); transform: scale(.94); box-shadow: 0 0 0 3px #e05252; }
+.design-layer .topping-panel button {
+  min-height: 82px;
+  gap: 4px;
+  padding: 4px 2px;
+  border-width: 3px;
+  border-radius: 18px 18px 9px 9px;
+}
+.design-layer .topping-panel span { width: 31px; height: 31px; }
+.design-layer .topping-panel .drawn-icon { width: 23px; height: 23px; }
+.design-layer .topping-panel strong { font-size: 6px; }
+
+.design-layer .game-footer {
+  height: 50px;
+  min-height: 50px;
+  grid-template-columns: 105px minmax(0,1fr) 170px;
+  gap: 8px;
+  padding: 5px 9px;
+}
+.design-layer .combo-panel { padding-left: 4px; }
+.design-layer .combo-panel span { font-size: 6px; }
+.design-layer .combo-panel strong { font-size: 19px; line-height: 1; }
+.design-layer .combo-panel > i { width: 88px; height: 4px; margin-top: 2px; }
+.design-layer .game-message {
+  min-width: 0;
+  gap: 7px;
+  padding: 6px 10px;
+  font-size: 7px;
+  border: 1px solid rgba(255,228,188,.18);
+  border-radius: 9px;
+  background: rgba(24,13,17,.28);
+}
+.design-layer .game-message p { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.design-layer .message-spark { width: 16px; height: 16px; flex: 0 0 auto; }
+.design-layer .skill-button {
+  min-height: 40px;
+  grid-template-columns: 32px 1fr;
+  gap: 6px;
+  padding: 4px 7px;
+  border-radius: 10px;
+}
+.design-layer .skill-avatar.drawn-icon { width: 30px; height: 30px; }
+.design-layer .skill-button small { font-size: 5px; }
+.design-layer .skill-button strong { font-size: 7px; }
+.design-layer .skill-button > i { z-index: 1; background: rgba(7,8,18,.72); transition: height .1s linear; }
+.design-layer .skill-button > span { position: relative; z-index: 2; }
+.design-layer .skill-button.is-ready { border-color: #ffe27a; box-shadow: 0 0 0 2px rgba(255,218,91,.32),inset 0 1px rgba(255,255,255,.18); }
+.skill-cooldown-label {
+  position: absolute;
+  z-index: 3;
+  right: 6px;
+  top: 5px;
+  color: #fff0bb;
+  font: 700 7px Fredoka,sans-serif;
+}
+
+.game-feedback {
+  position: absolute;
+  z-index: 40;
+  top: 86px;
+  left: 50%;
+  display: grid;
+  min-width: 160px;
+  padding: 9px 16px;
+  place-items: center;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  border: 2px solid rgba(255,255,255,.9);
+  border-radius: 13px;
+  background: linear-gradient(145deg,#328f85,#17605f);
+  box-shadow: 0 7px 0 rgba(20,22,29,.22),0 12px 22px rgba(0,0,0,.28);
+  transform: translate(-50%,-8px) scale(.86);
+}
+.game-feedback strong { font-size: 13px; letter-spacing: .06em; }
+.game-feedback span { margin-top: 2px; font-size: 7px; }
+.game-feedback.show { animation: feedbackPop 1.05s ease both; }
+.game-feedback.error,
+.game-feedback.burnt { background: linear-gradient(145deg,#e05a4d,#8f2731); }
+.game-feedback.skill { background: linear-gradient(145deg,#746bd1,#393273); }
+.toast[data-type="success"] { background: #176b62; }
+.toast[data-type="error"] { background: #9e3038; }
+
+.design-layer button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px #347fc4;
+}
+.design-layer .recipe-button:active,
+.design-layer .cooker:active,
+.design-layer .plate:active,
+.design-layer .topping-panel button:active,
+.design-layer .skill-button:active { transform: translateY(2px) scale(.98); }
+
+@keyframes feedbackPop {
+  0% { opacity: 0; transform: translate(-50%,-8px) scale(.86); }
+  14%,72% { opacity: 1; transform: translate(-50%,0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%,-12px) scale(.96); }
+}
+@keyframes readyHalo { to { filter: brightness(1.16); box-shadow: inset 0 -4px rgba(0,0,0,.18),0 0 0 4px #ffe174,0 0 18px rgba(255,218,104,.9); } }
+@keyframes burntJolt { 25% { transform: rotate(-1.5deg); } 75% { transform: rotate(1.5deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .game-feedback.show { animation: feedbackFade 1.05s linear both; }
+  .design-layer .cooker.ready,
+  .design-layer .cooker.burnt { animation: none; }
+}
+@keyframes feedbackFade { 0%,100% { opacity: 0; } 10%,80% { opacity: 1; transform: translate(-50%,0); } }

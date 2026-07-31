@@ -60,11 +60,11 @@
   bottom: 4px;
   left: 0;
   display: block;
-  width: 78px;
-  height: 117px;
+  width: 76px;
+  height: 114px;
   pointer-events: none;
   transform: translate3d(var(--actor-x), 0, 0);
-  transition: transform var(--travel-duration, 900ms) cubic-bezier(.3, .72, .28, 1);
+  transition: transform var(--travel-duration, 900ms) linear;
   will-change: transform;
 }
 
@@ -89,30 +89,70 @@
   height: 100%;
   background-image: url("assets/sprites/customer-sprites.webp");
   background-repeat: no-repeat;
-  background-position: 0 var(--sprite-y);
+  background-position: 0 var(--fallback-row-y, 0%);
   background-size: 800% 300%;
   filter: drop-shadow(0 2px 2px rgba(5, 8, 16, .38));
   transform-origin: 50% 75%;
+}
+
+.design-layer .customer-actor.has-v2-atlas .customer-sprite-frame {
+  left: -5px;
+  width: 86px;
+  background-image: var(--atlas-url);
+  background-size: 800% 600%;
 }
 
 .design-layer .customer-actor[data-direction="left"] .customer-sprite-frame {
   transform: scaleX(-1);
 }
 
-.design-layer .customer-actor[data-state="walk"] .customer-sprite-frame {
-  animation: customer-sprite-walk .58s steps(1, end) infinite;
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="walk"] .customer-sprite-frame {
+  animation: customer-sprite-fallback-walk .5714s steps(1, end) infinite;
 }
 
-.design-layer .customer-actor[data-state="idle"] .customer-sprite-frame {
-  animation: customer-sprite-idle 1.4s steps(1, end) infinite;
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="idle"] .customer-sprite-frame,
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="satisfied"] .customer-sprite-frame {
+  animation: customer-sprite-fallback-idle 1.1428s steps(1, end) infinite;
 }
 
-.design-layer .customer-actor[data-state="counter"] .customer-sprite-frame {
-  animation: customer-sprite-counter 1.05s steps(1, end) infinite;
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="wait_concerned"] .customer-sprite-frame,
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="impatient"] .customer-sprite-frame,
+.design-layer .customer-actor:not(.has-v2-atlas)[data-state="leave_angry"] .customer-sprite-frame {
+  animation: customer-sprite-fallback-counter 1.1428s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="idle"] .customer-sprite-frame {
+  background-position-y: 0;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="walk"] .customer-sprite-frame {
+  background-position-y: 20%;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="wait_concerned"] .customer-sprite-frame {
+  background-position-y: 40%;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="impatient"] .customer-sprite-frame {
+  background-position-y: 60%;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) infinite;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="satisfied"] .customer-sprite-frame {
+  background-position-y: 80%;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) 1;
+}
+
+.design-layer .customer-actor.has-v2-atlas[data-state="leave_angry"] .customer-sprite-frame {
+  background-position-y: 100%;
+  animation: customer-sprite-v2-frames .5714s steps(1, end) infinite;
 }
 
 .design-layer .customer-actor.is-impatient .customer-sprite-frame {
-  animation-duration: .42s;
+  animation-duration: .5s;
   filter: drop-shadow(0 2px 2px rgba(5, 8, 16, .38)) saturate(1.12);
 }
 
@@ -128,11 +168,12 @@
 
 .design-layer .order-card {
   position: absolute;
-  top: 61px;
+  top: 6px;
   left: var(--order-x);
   display: block;
-  width: 145px;
-  min-height: 70px;
+  width: 172px;
+  height: 128px;
+  min-height: 128px;
   padding: 0 0 10px;
   color: var(--ink);
   pointer-events: auto;
@@ -148,18 +189,21 @@
 
 .design-layer .order-content {
   display: block;
-  min-height: 53px;
-  padding: 5px 6px 7px;
+  top: 4px;
+  left: calc(50% + 86px);
+  width: 132px;
+  min-height: 58px;
+  padding: 7px 7px 8px;
   border: 2px solid rgba(255, 255, 255, .94);
   border-radius: 7px;
 }
 
 .design-layer .order-content::after {
-  position: absolute;
-  top: 23px;
-  left: -5px;
-  width: 9px;
-  height: 9px;
+  top: 27px;
+  bottom: auto;
+  left: -7px;
+  width: 12px;
+  height: 12px;
   content: "";
   border: 2px solid white;
   border-top: 0;
@@ -170,44 +214,100 @@
 
 .design-layer .order-content > small {
   margin-bottom: 3px;
-  padding: 1px 4px;
+  padding: 2px 5px;
   font-size: 6px;
 }
 
 .design-layer .dish-list {
-  gap: 3px;
+  gap: 5px;
+}
+
+.design-layer .order-card.order-enter .order-content {
+  animation: customer-order-enter .28s cubic-bezier(.2,.8,.25,1) both;
 }
 
 .design-layer .dish-ticket {
-  grid-template-columns: 21px minmax(0, 1fr) 16px;
-  gap: 3px;
-  min-height: 20px;
-  padding: 2px 3px;
+  position: relative;
+  display: block;
+  width: 54px;
+  min-height: 44px;
+  padding: 4px;
 }
 
 .design-layer .dish-ticket i {
-  width: 20px;
-  height: 18px;
+  width: 36px;
+  height: 31px;
+  margin: 0 auto;
 }
 
 .design-layer .dish-ticket b {
-  font-size: 7px;
+  display: none;
 }
 
 .design-layer .dish-ticket em {
-  font-size: 9px;
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+}
+
+.design-layer .dish-list:has(.dish-ticket:nth-child(3)) {
+  gap: 3px;
+}
+
+.design-layer .dish-list:has(.dish-ticket:nth-child(3)) .dish-ticket {
+  width: 35px;
+}
+
+.design-layer .dish-list:has(.dish-ticket:nth-child(3)) .dish-ticket i {
+  width: 32px;
+  height: 28px;
 }
 
 .design-layer .patience {
-  right: 25px;
-  bottom: 2px;
-  left: 6px;
-  height: 5px;
+  right: 12px;
+  bottom: 4px;
+  left: 12px;
+  height: 7px;
+  border: 2px solid rgba(255,255,255,.92);
+  border-radius: 99px;
+  background: rgba(49,27,27,.48);
 }
 
 .design-layer .like-line {
-  right: 5px;
-  bottom: 0;
+  right: 10px;
+  bottom: 14px;
+  left: auto;
+  padding: 2px 5px;
+  font-size: 6px;
+}
+
+.design-layer .order-card.impatient .order-content {
+  border-color: #ffb2a6;
+  box-shadow: 0 0 0 3px rgba(239,70,76,.32),0 7px 14px rgba(56,18,23,.3);
+}
+
+.design-layer .order-card.concerned:not(.impatient) .order-content {
+  border-color: #ffd989;
+  box-shadow: 0 0 0 2px rgba(238,166,61,.24),0 7px 14px rgba(56,32,18,.24);
+}
+
+.design-layer .order-card.concerned:not(.impatient) .patience i {
+  background: linear-gradient(90deg,#f1b84c,#f1834d);
+}
+
+.design-layer .order-card.most-urgent .order-content {
+  animation: customer-order-alert .5s ease-in-out infinite alternate;
+}
+
+.design-layer .order-card.impatient .patience {
+  background: rgba(106,25,29,.62);
+}
+
+.design-layer .order-card.last-warning .patience {
+  box-shadow: 0 0 0 2px rgba(255,74,69,.42),0 0 8px rgba(255,57,53,.62);
 }
 
 .design-layer .customer-face {
@@ -224,21 +324,42 @@
   background: rgba(7, 16, 28, .7);
 }
 
-@keyframes customer-sprite-idle {
+@keyframes customer-sprite-fallback-idle {
   0%, 49% { background-position-x: 0; }
   50%, 100% { background-position-x: 14.2857%; }
 }
 
-@keyframes customer-sprite-walk {
+@keyframes customer-sprite-fallback-walk {
   0%, 24% { background-position-x: 28.5714%; }
   25%, 49% { background-position-x: 42.8571%; }
   50%, 74% { background-position-x: 57.1429%; }
   75%, 100% { background-position-x: 71.4286%; }
 }
 
-@keyframes customer-sprite-counter {
+@keyframes customer-sprite-fallback-counter {
   0%, 49% { background-position-x: 85.7143%; }
   50%, 100% { background-position-x: 100%; }
+}
+
+/* Eight evenly timed columns: 8 frames / .5714s = about 14 FPS. */
+@keyframes customer-sprite-v2-frames {
+  0%, 12.499% { background-position-x: 0; }
+  12.5%, 24.999% { background-position-x: 14.2857%; }
+  25%, 37.499% { background-position-x: 28.5714%; }
+  37.5%, 49.999% { background-position-x: 42.8571%; }
+  50%, 62.499% { background-position-x: 57.1429%; }
+  62.5%, 74.999% { background-position-x: 71.4286%; }
+  75%, 87.499% { background-position-x: 85.7143%; }
+  87.5%, 100% { background-position-x: 100%; }
+}
+
+@keyframes customer-order-alert {
+  to { transform: translate(-50%,-2px) scale(1.025); }
+}
+
+@keyframes customer-order-enter {
+  from { opacity: 0; transform: translate(-50%,-5px) scale(.9); }
+  to { opacity: 1; transform: translate(-50%,0) scale(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -247,6 +368,14 @@
   }
 
   .design-layer .customer-sprite-frame {
-    animation-duration: 2.4s !important;
+    animation: none !important;
+  }
+
+  .design-layer .order-card.most-urgent .order-content {
+    animation: none;
+  }
+
+  .design-layer .customer-actor.has-v2-atlas .customer-sprite-frame {
+    background-position-x: 0;
   }
 }

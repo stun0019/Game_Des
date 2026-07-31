@@ -5,6 +5,7 @@
   const VERSION = 2;
   const GAME_WIDTH = 1280;
   const GAME_HEIGHT = 720;
+  const COMBO_WINDOW_MS = 2200;
 
   const RESTAURANTS = {
     ramen: {
@@ -80,7 +81,8 @@
     gameCoins: $("#gameCoins"), conditionBadges: $("#conditionBadges"), waveBanner: $("#waveBanner"), orders: $("#orders"),
     recipePanel: $("#recipePanel"), cookers: $("#cookers"), plates: $("#plates"), toppingPanel: $("#toppingPanel"),
     comboCount: $("#comboCount"), comboTimer: $("#comboTimer"), gameMessage: $("#gameMessage p"),
-    skillButton: $("#buddySkillButton"), skillCooldown: $("#skillCooldown"),
+    skillButton: $("#buddySkillButton"), skillCooldown: $("#skillCooldown"), skillCooldownLabel: $("#skillCooldownLabel"),
+    gameFeedback: $("#gameFeedback"),
     briefingModal: $("#briefingModal"), briefingMode: $("#briefingMode"), briefingTitle: $("#briefingTitle"),
     briefingDescription: $("#briefingDescription"), briefingGoal: $("#briefingGoal"), boosterGrid: $("#boosterGrid"),
     upgradeModal: $("#upgradeModal"), upgradeTabs: $("#upgradeRestaurantTabs"), upgradeList: $("#upgradeList"),
@@ -99,6 +101,7 @@
   let game = null;
   let frameHandle = null;
   let toastHandle = null;
+  let feedbackHandle = null;
   let audioContext = null;
   let musicTimer = null;
   let musicMode = "lobby";
@@ -368,6 +371,7 @@
       cookers: Array.from({ length: upgrades.cookers }, () => ({ status: "idle", base: null, startedAt: 0, readyAt: 0 })),
       plates: Array.from({ length: upgrades.plates }, () => null), orders: [], selectedBoosters: [...selectedBoosters],
       buddy: profile.selectedBuddy, skillReadyAt: 0, antiBurnUntil: 0, movesLeft: level.moves || null,
+      seenOrderIds: new Set(),
       wave: 1, waveCompleted: 0, lastFrame: performance.now(), ended: false,
     };
     if (level.mode === "course") spawnCourseWave();
@@ -426,23 +430,20 @@
     ].join("");
     els.waveBanner.classList.toggle("hidden", level.mode !== "course");
     els.recipePanel.innerHTML = Object.entries(restaurant.recipes).map(([id, recipe], index) => `
-      <button class="recipe-button ${index === 0 ? "selected" : ""}" data-recipe="${id}" type="button">
+      <button class="recipe-button ${index === 0 ? "selected" : ""}" data-recipe="${id}" type="button" aria-label="選擇${recipe.name}，烹調時間${(effectiveCookTime(recipe) / 1000).toFixed(1)}秒">
         <span style="background:${recipe.color}">${iconMarkup(recipe.icon, "i")}</span><div><strong>${recipe.name}</strong><small>${(effectiveCookTime(recipe) / 1000).toFixed(1)} 秒</small></div><i></i>
       </button>`).join("");
     $$("[data-recipe]").forEach((button) => button.addEventListener("click", () => selectRecipe(button.dataset.recipe)));
-    els.cookers.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="cooker ${index >= upgrades.cookers ? "locked" : ""}" data-cooker="${index}" type="button" ${index >= upgrades.cookers ? "disabled" : ""}>
+    els.cookers.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="cooker ${index >= upgrades.cookers ? "locked" : ""}" data-cooker="${index}" type="button" aria-label="設備${String.fromCharCode(65 + index)}，${index >= upgrades.cookers ? "尚未升級" : "點擊烹調"}" ${index >= upgrades.cookers ? "disabled" : ""}>
       <small>設備 ${String.fromCharCode(65 + index)}</small><span class="cooker-pot"><i></i><b class="drawn-icon icon-bolt" aria-hidden="true"></b></span><strong>${index >= upgrades.cookers ? "尚未升級" : "點擊烹調"}</strong><em><i></i></em>
     </button>`).join("");
     $$("[data-cooker]").forEach((button) => button.addEventListener("click", () => handleCooker(Number(button.dataset.cooker))));
-    els.plates.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="plate ${index >= upgrades.plates ? "locked" : "empty"} ${index === 0 ? "active" : ""}" data-plate="${index}" type="button" ${index >= upgrades.plates ? "disabled" : ""}>
+    els.plates.innerHTML = Array.from({ length: 3 }, (_, index) => `<button class="plate ${index >= upgrades.plates ? "locked" : "empty"} ${index === 0 ? "active" : ""}" data-plate="${index}" type="button" aria-label="餐盤${index + 1}，${index >= upgrades.plates ? "尚未升級" : "空餐盤"}" ${index >= upgrades.plates ? "disabled" : ""}>
       <small>餐盤 ${index + 1}</small><span class="plate-bowl"><i></i><b></b></span><strong>${index >= upgrades.plates ? "尚未升級" : "空餐盤"}</strong><em>雙擊丟棄</em>
     </button>`).join("");
-    $$("[data-plate]").forEach((button) => {
-      button.addEventListener("click", () => selectPlate(Number(button.dataset.plate)));
-      button.addEventListener("dblclick", () => discardPlate(Number(button.dataset.plate)));
-    });
+    $$("[data-plate]").forEach((button) => attachPlateInteraction(button, Number(button.dataset.plate)));
     els.toppingPanel.innerHTML = Object.entries(restaurant.toppings).map(([id, topping]) => `
-      <button data-topping="${id}" type="button"><span>${iconMarkup(topping.icon, "i")}</span><strong>${topping.name}</strong></button>`).join("");
+      <button data-topping="${id}" type="button" aria-label="加入${topping.name}"><span>${iconMarkup(topping.icon, "i")}</span><strong>${topping.name}</strong></button>`).join("");
     $$("[data-topping]").forEach((button) => button.addEventListener("click", () => addTopping(button.dataset.topping)));
     const buddy = BUDDIES[game.buddy];
     els.skillButton.querySelector(".skill-avatar").className = `skill-avatar drawn-icon icon-${buddy.icon}`;
@@ -502,6 +503,43 @@
     renderPlates();
   }
 
+  function attachPlateInteraction(button, index) {
+    let discardTimer = 0;
+    let longPressed = false;
+    const cancelDiscard = () => {
+      clearTimeout(discardTimer);
+      discardTimer = 0;
+      button.classList.remove("holding-discard");
+    };
+    button.addEventListener("pointerdown", () => {
+      if (!game?.plates[index]) return;
+      longPressed = false;
+      button.classList.add("holding-discard");
+      discardTimer = window.setTimeout(() => {
+        longPressed = true;
+        button.classList.remove("holding-discard");
+        discardPlate(index);
+      }, 650);
+    });
+    button.addEventListener("pointerup", cancelDiscard);
+    button.addEventListener("pointercancel", cancelDiscard);
+    button.addEventListener("pointerleave", cancelDiscard);
+    button.addEventListener("click", (event) => {
+      if (longPressed) {
+        event.preventDefault();
+        longPressed = false;
+        return;
+      }
+      selectPlate(index);
+    });
+    button.addEventListener("dblclick", () => discardPlate(index));
+    button.addEventListener("keydown", (event) => {
+      if (event.key !== "Delete" && event.key !== "Backspace") return;
+      event.preventDefault();
+      discardPlate(index);
+    });
+  }
+
   function addTopping(id) {
     if (!game?.playing) return;
     const plate = game.plates[game.activePlate];
@@ -532,7 +570,8 @@
       game.combo = 0;
       updateComboUI();
       playTone(125, .14, "square");
-      return showToast("餐點與這位客人的訂單不符");
+      showGameFeedback("error", "訂單不符", "Combo 中斷");
+      return showToast("餐點與這位客人的訂單不符", "error");
     }
     dish.served = true;
     game.plates[game.activePlate] = null;
@@ -542,7 +581,7 @@
     if (patienceRatio >= .55) game.likes += 1;
     game.combo += 1;
     game.bestCombo = Math.max(game.bestCombo, game.combo);
-    game.comboExpiresAt = performance.now() + 4400;
+    game.comboExpiresAt = performance.now() + COMBO_WINDOW_MS;
     const valueMultiplier = 1 + game.upgrades.value * .12;
     const scoreBoost = game.selectedBoosters.includes("score") ? 1.2 : 1;
     const buddyScore = game.buddy === "lumi" ? 1.05 : 1;
@@ -551,12 +590,14 @@
     const coins = Math.round((10 + game.combo) * valueMultiplier * buddyCoins);
     game.score += points; game.coins += coins;
     playSuccess();
-    showToast(`完美上菜！+${points} 分 · +${coins} 金幣`);
+    showGameFeedback("success", "出餐成功", `+${points} 分 · Combo x${game.combo}`);
+    showToast(`完美上菜！+${points} 分 · +${coins} 金幣`, "success");
     if (game.level.mode === "course") {
       game.orders.forEach((order) => order.patience -= 1.2);
     }
     if (customer.dishes.every((item) => item.served)) {
       game.customersCompleted += 1;
+      notifyCustomerDeparture(customer.id, "satisfied");
       game.orders = game.orders.filter((item) => item.id !== customerId);
       if (game.level.mode === "course") {
         if (!game.orders.length) advanceWave();
@@ -589,10 +630,11 @@
       showToast("8 秒內料理不會燒焦！");
     } else {
       game.combo += 3;
-      game.comboExpiresAt = performance.now() + 4400;
+      game.comboExpiresAt = performance.now() + COMBO_WINDOW_MS;
       showToast("Combo 立即增加 3！");
     }
     playSuccess();
+    showGameFeedback("skill", "技能發動", els.skillButton.querySelector("strong").textContent);
     renderOrders();
     updateComboUI();
   }
@@ -619,6 +661,7 @@
 
   function handleCustomerLeave(customer) {
     if (!game?.playing) return;
+    notifyCustomerDeparture(customer.id, "leave_angry");
     game.orders = game.orders.filter((item) => item.id !== customer.id);
     game.misses += 1;
     game.combo = 0;
@@ -627,6 +670,12 @@
     renderOrders();
     showToast("客人等太久離開了");
     playTone(120, .18, "sawtooth");
+  }
+
+  function notifyCustomerDeparture(id, mood) {
+    els.orders.dispatchEvent(new CustomEvent("customerdeparture", {
+      detail: { id, mood },
+    }));
   }
 
   function updateCookers(now) {
@@ -640,7 +689,9 @@
         const protectedFromBurn = game.selectedBoosters.includes("antiBurn") || now < game.antiBurnUntil;
         if (!protectedFromBurn && now - cooker.readyAt >= 8500) {
           if (game.level.failBurn) return finishLevel(false, "料理燒焦，觸發本關失敗條件。");
-          cooker.status = "burnt"; game.combo = 0; showToast("料理燒焦了！");
+          cooker.status = "burnt"; game.combo = 0;
+          showGameFeedback("burnt", "料理燒焦", "點擊設備立即清理");
+          showToast("料理燒焦了！", "error");
         }
       }
     });
@@ -667,6 +718,7 @@
         label.textContent = protectedFromBurn ? "完成 · 防焦中" : "完成！點擊取餐"; fill.style.width = `${remaining * 100}%`;
       }
       if (cooker.status === "burnt") { label.textContent = "燒焦 · 點擊清理"; fill.style.width = "100%"; }
+      element.setAttribute("aria-label", `設備${String.fromCharCode(65 + index)}，${label.textContent}`);
     });
   }
 
@@ -692,14 +744,26 @@
       } else {
         symbol.className = ""; topping.className = ""; symbol.textContent = ""; topping.textContent = ""; label.textContent = "空餐盤";
       }
+      element.setAttribute("aria-label", `餐盤${index + 1}，${label.textContent}${plate ? "，長按可丟棄" : ""}`);
     });
   }
 
   function renderOrders() {
     if (!game) return;
+    const urgentCustomer = game.orders.reduce((lowest, customer) => (
+      !lowest || customer.patience < lowest.patience ? customer : lowest
+    ), null);
+    const urgentId = urgentCustomer && urgentCustomer.patience / urgentCustomer.maxPatience < .25
+      ? urgentCustomer.id
+      : null;
     els.orders.innerHTML = game.orders.map((customer, index) => {
       const patienceRatio = clamp(customer.patience / customer.maxPatience, 0, 1);
-      return `<button class="order-card ${patienceRatio < .28 ? "impatient" : ""}" data-order="${customer.id}" data-customer-variant="${customer.face.variant}" style="--order-slot:${index};--order-x:${123 + index * 260}px" type="button">
+      const pendingDishes = customer.dishes.filter((dish) => !dish.served);
+      const pendingSummary = pendingDishes.map((dish) => (
+        `${game.restaurant.recipes[dish.base].name}加${game.restaurant.toppings[dish.topping].name}`
+      )).join("、");
+      const isNew = !game.seenOrderIds.has(customer.id);
+      return `<button class="order-card ${isNew ? "order-enter" : ""} ${patienceRatio < .55 ? "concerned" : ""} ${patienceRatio < .25 ? "impatient" : ""} ${patienceRatio < .1 ? "last-warning" : ""} ${customer.id === urgentId ? "most-urgent" : ""}" data-order="${customer.id}" data-customer-variant="${customer.face.variant}" style="--order-slot:${index};--order-x:${75 + index * 268}px" type="button" aria-label="客人${index + 1}，訂購${pendingSummary}，點擊出餐">
         <span class="order-content"><small>GUEST ${String(game.customersCompleted + index + 1).padStart(2, "0")}</small>
           <span class="dish-list">${customer.dishes.map((dish) => {
             const recipe = game.restaurant.recipes[dish.base], topping = game.restaurant.toppings[dish.topping];
@@ -709,29 +773,41 @@
         <span class="like-line">${iconMarkup("heart", "i")}<b>讚</b></span><span class="patience"><i style="width:${patienceRatio * 100}%"></i></span>
       </button>`;
     }).join("") || `<div class="orders-empty">下一批客人即將抵達…</div>`;
+    game.orders.forEach((customer) => game.seenOrderIds.add(customer.id));
     $$("[data-order]").forEach((button) => button.addEventListener("click", () => serveCustomer(button.dataset.order)));
   }
 
   function updateRuntimeUI(now) {
     els.gameTime.textContent = Math.ceil(game.timeLeft);
     els.gameTime.classList.toggle("danger", game.timeLeft <= 15);
-    const ratio = game.combo ? clamp((game.comboExpiresAt - now) / 4400, 0, 1) : 0;
+    const ratio = game.combo ? clamp((game.comboExpiresAt - now) / COMBO_WINDOW_MS, 0, 1) : 0;
     els.comboTimer.style.width = `${ratio * 100}%`;
     const cooldown = Math.max(0, game.skillReadyAt - now);
     els.skillButton.disabled = cooldown > 0;
     els.skillCooldown.style.height = `${clamp(cooldown / 25000, 0, 1) * 100}%`;
+    els.skillCooldownLabel.textContent = cooldown > 0 ? `${Math.ceil(cooldown / 1000)}s` : "";
+    els.skillButton.classList.toggle("is-ready", cooldown <= 0);
+    els.skillButton.setAttribute("aria-label", cooldown > 0
+      ? `夥伴技能冷卻中，剩餘${Math.ceil(cooldown / 1000)}秒`
+      : `使用夥伴技能：${els.skillButton.querySelector("strong").textContent}`);
     if (game.level.mode === "course") {
       els.waveBanner.classList.remove("hidden");
       els.waveBanner.innerHTML = `WAVE <b>${game.wave}</b> / ${game.level.waves.length}`;
     }
     const movesBadge = els.conditionBadges.querySelector('[data-condition="moves"] b');
     if (movesBadge && game.movesLeft !== null) movesBadge.textContent = `${game.movesLeft} 次`;
+    const urgentCustomer = game.orders.reduce((lowest, customer) => (
+      !lowest || customer.patience < lowest.patience ? customer : lowest
+    ), null);
     game.orders.forEach((customer) => {
       const card = els.orders.querySelector(`[data-order="${customer.id}"]`);
       if (!card) return;
       const ratioNow = clamp(customer.patience / customer.maxPatience, 0, 1);
       card.querySelector(".patience i").style.width = `${ratioNow * 100}%`;
-      card.classList.toggle("impatient", ratioNow < .28);
+      card.classList.toggle("concerned", ratioNow < .55);
+      card.classList.toggle("impatient", ratioNow < .25);
+      card.classList.toggle("last-warning", ratioNow < .1);
+      card.classList.toggle("most-urgent", customer === urgentCustomer && ratioNow < .25);
     });
   }
 
@@ -830,9 +906,12 @@
     const viewport = window.visualViewport;
     const availableWidth = viewport?.width || view.clientWidth || window.innerWidth;
     const availableHeight = viewport?.height || window.innerHeight;
-    const scale = Math.min(availableWidth / GAME_WIDTH, availableHeight / GAME_HEIGHT);
+    const gestureClearance = availableWidth <= 900 ? 20 : 0;
+    const canvasHeight = Math.max(1, availableHeight - gestureClearance);
+    const scale = Math.min(availableWidth / GAME_WIDTH, canvasHeight / GAME_HEIGHT);
     canvas.style.setProperty("--game-scale", String(scale));
-    view.style.height = `${GAME_HEIGHT * scale}px`;
+    view.style.height = `${GAME_HEIGHT * scale + gestureClearance}px`;
+    view.style.setProperty("--gesture-clearance", `${gestureClearance}px`);
   }
 
   function fitLobbyCanvas() {
@@ -862,6 +941,21 @@
     els.gameMessage.textContent = text;
   }
 
+  function showGameFeedback(type, title, detail = "") {
+    if (!els.gameFeedback) return;
+    clearTimeout(feedbackHandle);
+    els.gameFeedback.className = "game-feedback";
+    void els.gameFeedback.offsetWidth;
+    els.gameFeedback.querySelector("strong").textContent = title;
+    els.gameFeedback.querySelector("span").textContent = detail;
+    els.gameFeedback.classList.add(type, "show");
+    feedbackHandle = window.setTimeout(() => {
+      els.gameFeedback.classList.remove("show");
+      els.gameFeedback.querySelector("strong").textContent = "";
+      els.gameFeedback.querySelector("span").textContent = "";
+    }, 1050);
+  }
+
   function openModal(element) {
     element.classList.add("open");
   }
@@ -874,8 +968,9 @@
     $$(".modal").forEach((modal) => modal.classList.remove("open"));
   }
 
-  function showToast(text) {
+  function showToast(text, type = "info") {
     els.toast.textContent = text;
+    els.toast.dataset.type = type;
     els.toast.classList.add("show");
     clearTimeout(toastHandle);
     toastHandle = setTimeout(() => els.toast.classList.remove("show"), 1800);
